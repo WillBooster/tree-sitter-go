@@ -1,0 +1,38 @@
+================================================================================
+Declaration at the end of input without a newline
+================================================================================
+
+package p
+
+var x = 1
+--------------------------------------------------------------------------------
+
+(source_file
+  (package_clause
+    (package_identifier))
+  (var_declaration
+    (var_spec
+      (identifier)
+      (expression_list
+        (int_literal)))))
+
+================================================================================
+Statement at the end of input without a newline
+================================================================================
+
+package p
+
+x := f(1)
+--------------------------------------------------------------------------------
+
+(source_file
+  (package_clause
+    (package_identifier))
+  (short_var_declaration
+    (expression_list
+      (identifier))
+    (expression_list
+      (call_expression
+        (identifier)
+        (argument_list
+          (int_literal))))))
