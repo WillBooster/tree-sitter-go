@@ -32,7 +32,6 @@ examples/go/src/internal/types/testdata/check/builtins0.go
 examples/go/src/internal/types/testdata/check/constdecl.go
 examples/go/src/internal/types/testdata/check/cycles5.go
 examples/go/src/internal/types/testdata/check/decls0.go
-examples/go/src/internal/types/testdata/check/decls3.go
 examples/go/src/internal/types/testdata/check/decls4.go
 examples/go/src/internal/types/testdata/check/expr0.go
 examples/go/src/internal/types/testdata/check/expr3.go
