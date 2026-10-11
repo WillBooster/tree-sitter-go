@@ -4,11 +4,7 @@
 //! tree-sitter [`Parser`], and then use the parser to parse some code:
 //!
 //! ```
-//! let code = r#"
-//! func add(a, b int) int {
-//!     return a + b
-//! }
-//! "#;
+//! let code = "package main\n\nfunc main() {}\n";
 //! let mut parser = tree_sitter::Parser::new();
 //! let language = tree_sitter_go::LANGUAGE;
 //! parser
@@ -18,12 +14,12 @@
 //! assert!(!tree.root_node().has_error());
 //! ```
 //!
-//! [`Parser`]: https://docs.rs/tree-sitter/0.25.8/tree_sitter/struct.Parser.html
+//! [`Parser`]: https://docs.rs/willbooster-tree-sitter/1/tree_sitter/struct.Parser.html
 //! [tree-sitter]: https://tree-sitter.github.io/
 
 use tree_sitter_language::LanguageFn;
 
-extern "C" {
+unsafe extern "C" {
     fn tree_sitter_go() -> *const ();
 }
 
