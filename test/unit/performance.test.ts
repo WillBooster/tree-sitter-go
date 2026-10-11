@@ -13,7 +13,7 @@ await Parser.init();
 const parser = new Parser();
 parser.setLanguage(await Language.load(WasmPath));
 
-// The tests load the existing Wasm build, so a check against a stale one would miss an edit that restores the slowdown.
+// The tests load the existing Wasm build, so a stale one would hide an edit that makes error recovery slower than linear.
 test('uses a Wasm build built from the current parser', () => {
   const sources = ['grammar.js', 'src/parser.c', 'src/tree_sitter/parser.h'].map(
     (name) => fs.statSync(path.join(Root, name)).mtimeMs
