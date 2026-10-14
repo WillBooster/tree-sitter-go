@@ -1,4 +1,3 @@
-examples/go/src/cmd/compile/internal/importer/testdata/genmeth.go
 examples/go/src/cmd/compile/internal/syntax/testdata/issue20789.go
 examples/go/src/cmd/compile/internal/syntax/testdata/issue23385.go
 examples/go/src/cmd/compile/internal/syntax/testdata/issue23434.go
@@ -25,7 +24,6 @@ examples/go/src/cmd/compile/internal/types2/testdata/local/issue68183.go
 examples/go/src/cmd/compile/internal/types2/trie_test.go
 examples/go/src/cmd/cover/testdata/ranges/ranges.go
 examples/go/src/encoding/json/v2/arshal_test.go
-examples/go/src/go/internal/gcimporter/testdata/genmeth.go
 examples/go/src/go/parser/testdata/issue42951/not_a_file.go/invalid.go
 examples/go/src/go/types/trie_test.go
 examples/go/src/internal/types/testdata/check/builtins0.go
@@ -40,7 +38,6 @@ examples/go/src/internal/types/testdata/check/gotos.go
 examples/go/src/internal/types/testdata/check/issues0.go
 examples/go/src/internal/types/testdata/check/stmt0.go
 examples/go/src/internal/types/testdata/check/typeinst0.go
-examples/go/src/internal/types/testdata/check/typeparams.go
 examples/go/src/internal/types/testdata/check/vardecl.go
 examples/go/src/internal/types/testdata/examples/functions.go
 examples/go/src/internal/types/testdata/examples/types.go
@@ -58,11 +55,8 @@ examples/go/src/internal/types/testdata/fixedbugs/issue51658.go
 examples/go/src/internal/types/testdata/fixedbugs/issue53358.go
 examples/go/src/internal/types/testdata/fixedbugs/issue58612.go
 examples/go/src/internal/types/testdata/fixedbugs/issue75986.go
-examples/go/src/internal/types/testdata/spec/methods.go
-examples/go/src/math/rand/v2/rand.go
 examples/go/src/net/http/internal/http2/server.go
 examples/go/src/runtime/secret/secret_test.go
-examples/go/src/runtime/traceback_test.go
 examples/go/test/bombad.go
 examples/go/test/const2.go
 examples/go/test/ddd1.go
@@ -121,12 +115,8 @@ examples/go/test/fixedbugs/issue4452.go
 examples/go/test/fixedbugs/issue4470.go
 examples/go/test/fixedbugs/issue52278.go
 examples/go/test/fixedbugs/issue70175.go
-examples/go/test/fixedbugs/issue80976.go
-examples/go/test/fixedbugs/issue81165.go
 examples/go/test/fixedbugs/issue9036.go
-examples/go/test/genmeth.go
 examples/go/test/genmeth1.go
-examples/go/test/genmeth2.go
 examples/go/test/import5.go
 examples/go/test/method4.dir/prog.go
 examples/go/test/method7.go
