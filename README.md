@@ -12,7 +12,7 @@ Go grammar for [tree-sitter](https://github.com/tree-sitter/tree-sitter), forked
 [tree-sitter/tree-sitter-go](https://github.com/tree-sitter/tree-sitter-go). We are grateful
 to its authors and contributors. This is not an official release of that project.
 
-This fork keeps the grammar of upstream's version 0.25.0 and generates the parser with the
+This fork extends upstream's version 0.25.0 grammar with method type parameters and generates the parser with the
 [WillBooster/tree-sitter](https://github.com/WillBooster/tree-sitter) generator. The parser carries that fork's own ABI
 number (`0x57420001`), so it loads only with the WillBooster runtime, version 2.0.0 or later
 (`willbooster-tree-sitter`, `@willbooster/web-tree-sitter`), and not with upstream's tree-sitter.
