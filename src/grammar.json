@@ -3546,8 +3546,12 @@
                   "type": "CHOICE",
                   "members": [
                     {
-                      "type": "SYMBOL",
-                      "name": "type_arguments"
+                      "type": "PREC_DYNAMIC",
+                      "value": 2,
+                      "content": {
+                        "type": "SYMBOL",
+                        "name": "type_arguments"
+                      }
                     },
                     {
                       "type": "BLANK"

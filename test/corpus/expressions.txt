@@ -91,6 +91,14 @@ func main() {
   a[b](c)
   a[b, c](d)
   a[b[c], d](e[f])
+  pkg.Map[int](123)
+  Map[[]int](values)
+  Map[int]()
+  Map[int](a, b)
+  Map[int](values...)
+  funcs[0](a)
+  funcs[i + 1](a)
+  _ = []Box[int](values)
 }
 
 --------------------------------------------------------------------------------
@@ -104,38 +112,110 @@ func main() {
     (block
       (statement_list
         (expression_statement
-          (type_conversion_expression
-            (generic_type
-              (type_identifier)
-              (type_arguments
-                (type_elem
-                  (type_identifier))))
-            (identifier)))
+          (call_expression
+            (identifier)
+            (type_arguments
+              (type_elem
+                (type_identifier)))
+            (argument_list
+              (identifier))))
         (expression_statement
-          (type_conversion_expression
-            (generic_type
-              (type_identifier)
-              (type_arguments
-                (type_elem
-                  (type_identifier))
-                (type_elem
-                  (type_identifier))))
-            (identifier)))
+          (call_expression
+            (identifier)
+            (type_arguments
+              (type_elem
+                (type_identifier))
+              (type_elem
+                (type_identifier)))
+            (argument_list
+              (identifier))))
         (expression_statement
-          (type_conversion_expression
-            (generic_type
-              (type_identifier)
-              (type_arguments
-                (type_elem
-                  (generic_type
-                    (type_identifier)
-                    (type_arguments
-                      (type_elem
-                        (type_identifier)))))
-                (type_elem
+          (call_expression
+            (identifier)
+            (type_arguments
+              (type_elem
+                (generic_type
+                  (type_identifier)
+                  (type_arguments
+                    (type_elem
+                      (type_identifier)))))
+              (type_elem
+                (type_identifier)))
+            (argument_list
+              (index_expression
+                (identifier)
+                (identifier)))))
+        (expression_statement
+          (call_expression
+            (selector_expression
+              (identifier)
+              (field_identifier))
+            (type_arguments
+              (type_elem
+                (type_identifier)))
+            (argument_list
+              (int_literal))))
+        (expression_statement
+          (call_expression
+            (identifier)
+            (type_arguments
+              (type_elem
+                (slice_type
                   (type_identifier))))
+            (argument_list
+              (identifier))))
+        (expression_statement
+          (call_expression
+            (identifier)
+            (type_arguments
+              (type_elem
+                (type_identifier)))
+            (argument_list)))
+        (expression_statement
+          (call_expression
+            (identifier)
+            (type_arguments
+              (type_elem
+                (type_identifier)))
+            (argument_list
+              (identifier)
+              (identifier))))
+        (expression_statement
+          (call_expression
+            (identifier)
+            (type_arguments
+              (type_elem
+                (type_identifier)))
+            (argument_list
+              (variadic_argument
+                (identifier)))))
+        (expression_statement
+          (call_expression
             (index_expression
               (identifier)
+              (int_literal))
+            (argument_list
+              (identifier))))
+        (expression_statement
+          (call_expression
+            (index_expression
+              (identifier)
+              (binary_expression
+                (identifier)
+                (int_literal)))
+            (argument_list
+              (identifier))))
+        (assignment_statement
+          (expression_list
+            (identifier))
+          (expression_list
+            (type_conversion_expression
+              (slice_type
+                (generic_type
+                  (type_identifier)
+                  (type_arguments
+                    (type_elem
+                      (type_identifier)))))
               (identifier))))))))
 
 ================================================================================

@@ -697,7 +697,7 @@ module.exports = grammar({
       ),
       seq(
         field('function', $._expression),
-        field('type_arguments', optional($.type_arguments)),
+        field('type_arguments', optional(prec.dynamic(2, $.type_arguments))),
         field('arguments', $.argument_list),
       ),
     )),
