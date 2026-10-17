@@ -768,13 +768,13 @@ module.exports = grammar({
       ')',
     )),
 
-    type_conversion_expression: $ => prec.dynamic(-1, seq(
+    type_conversion_expression: $ => prec(PREC.primary, prec.dynamic(-1, seq(
       field('type', $._type),
       '(',
       field('operand', $._expression),
       optional(','),
       ')',
-    )),
+    ))),
 
     type_instantiation_expression: $ => prec.dynamic(-1, seq(
       field('type', $._type),
