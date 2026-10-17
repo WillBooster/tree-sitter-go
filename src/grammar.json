@@ -3482,6 +3482,45 @@
         }
       ]
     },
+    "_generic_function": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "identifier"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "selector_expression"
+        },
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_parenthesized_generic_function"
+          },
+          "named": true,
+          "value": "parenthesized_expression"
+        }
+      ]
+    },
+    "_parenthesized_generic_function": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "("
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_generic_function"
+        },
+        {
+          "type": "STRING",
+          "value": ")"
+        }
+      ]
+    },
     "call_expression": {
       "type": "PREC",
       "value": 7,
@@ -3536,23 +3575,40 @@
                 "name": "function",
                 "content": {
                   "type": "SYMBOL",
-                  "name": "_expression"
+                  "name": "_generic_function"
                 }
               },
               {
                 "type": "FIELD",
                 "name": "type_arguments",
                 "content": {
-                  "type": "CHOICE",
-                  "members": [
-                    {
-                      "type": "SYMBOL",
-                      "name": "type_arguments"
-                    },
-                    {
-                      "type": "BLANK"
-                    }
-                  ]
+                  "type": "PREC_DYNAMIC",
+                  "value": 2,
+                  "content": {
+                    "type": "SYMBOL",
+                    "name": "type_arguments"
+                  }
+                }
+              },
+              {
+                "type": "FIELD",
+                "name": "arguments",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "argument_list"
+                }
+              }
+            ]
+          },
+          {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "FIELD",
+                "name": "function",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "_expression"
                 }
               },
               {
@@ -7058,12 +7114,29 @@
   ],
   "conflicts": [
     [
+      "_generic_function",
+      "_expression"
+    ],
+    [
+      "_generic_function",
       "_simple_type",
       "_expression"
     ],
     [
+      "_generic_function",
       "_simple_type",
       "generic_type",
+      "_expression"
+    ],
+    [
+      "_generic_function",
+      "type_parameter_declaration",
+      "_simple_type",
+      "generic_type",
+      "_expression"
+    ],
+    [
+      "_simple_type",
       "_expression"
     ],
     [
@@ -7089,12 +7162,6 @@
     ],
     [
       "type_parameter_declaration",
-      "_expression"
-    ],
-    [
-      "type_parameter_declaration",
-      "_simple_type",
-      "generic_type",
       "_expression"
     ]
   ],
