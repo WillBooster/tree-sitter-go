@@ -92,10 +92,16 @@ func main() {
   a[b, c](d)
   a[b[c], d](e[f])
   pkg.Map[int](123)
+  (Map)[int](123)
+  ((pkg.Map))[int](123)
   Map[[]int](values)
   Map[int]()
   Map[int](a, b)
   Map[int](values...)
+  routes[method][path](w, r)
+  newTable()[k](x)
+  a[b](c)[d](e)
+  s.cfg.Map[int](x)
   funcs[0](a)
   funcs[i + 1](a)
   _ = []Box[int](values)
@@ -157,6 +163,27 @@ func main() {
               (int_literal))))
         (expression_statement
           (call_expression
+            (parenthesized_expression
+              (identifier))
+            (type_arguments
+              (type_elem
+                (type_identifier)))
+            (argument_list
+              (int_literal))))
+        (expression_statement
+          (call_expression
+            (parenthesized_expression
+              (parenthesized_expression
+                (selector_expression
+                  (identifier)
+                  (field_identifier))))
+            (type_arguments
+              (type_elem
+                (type_identifier)))
+            (argument_list
+              (int_literal))))
+        (expression_statement
+          (call_expression
             (identifier)
             (type_arguments
               (type_elem
@@ -189,6 +216,50 @@ func main() {
             (argument_list
               (variadic_argument
                 (identifier)))))
+        (expression_statement
+          (call_expression
+            (index_expression
+              (index_expression
+                (identifier)
+                (identifier))
+              (identifier))
+            (argument_list
+              (identifier)
+              (identifier))))
+        (expression_statement
+          (call_expression
+            (index_expression
+              (call_expression
+                (identifier)
+                (argument_list))
+              (identifier))
+            (argument_list
+              (identifier))))
+        (expression_statement
+          (call_expression
+            (index_expression
+              (call_expression
+                (identifier)
+                (type_arguments
+                  (type_elem
+                    (type_identifier)))
+                (argument_list
+                  (identifier)))
+              (identifier))
+            (argument_list
+              (identifier))))
+        (expression_statement
+          (call_expression
+            (selector_expression
+              (selector_expression
+                (identifier)
+                (field_identifier))
+              (field_identifier))
+            (type_arguments
+              (type_elem
+                (type_identifier)))
+            (argument_list
+              (identifier))))
         (expression_statement
           (call_expression
             (index_expression

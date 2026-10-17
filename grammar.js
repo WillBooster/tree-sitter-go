@@ -85,15 +85,17 @@ module.exports = grammar({
   word: $ => $.identifier,
 
   conflicts: $ => [
+    [$._generic_function, $._expression],
+    [$._generic_function, $._simple_type, $._expression],
+    [$._generic_function, $._simple_type, $.generic_type, $._expression],
+    [$._generic_function, $.type_parameter_declaration, $._simple_type, $.generic_type, $._expression],
     [$._simple_type, $._expression],
-    [$._simple_type, $.generic_type, $._expression],
     [$.qualified_type, $._expression],
     [$.generic_type, $._simple_type],
     [$.parameter_declaration, $._simple_type],
     [$.type_parameter_declaration, $._simple_type],
     [$.type_parameter_declaration, $._simple_type, $._expression],
     [$.type_parameter_declaration, $._expression],
-    [$.type_parameter_declaration, $._simple_type, $.generic_type, $._expression],
   ],
 
   reserved: {
@@ -690,14 +692,26 @@ module.exports = grammar({
       ')',
     ),
 
+    _generic_function: $ => choice(
+      $.identifier,
+      $.selector_expression,
+      alias($._parenthesized_generic_function, $.parenthesized_expression),
+    ),
+
+    _parenthesized_generic_function: $ => seq('(', $._generic_function, ')'),
+
     call_expression: $ => prec(PREC.primary, choice(
       seq(
         field('function', alias(choice('new', 'make'), $.identifier)),
         field('arguments', alias($.special_argument_list, $.argument_list)),
       ),
       seq(
+        field('function', $._generic_function),
+        field('type_arguments', prec.dynamic(2, $.type_arguments)),
+        field('arguments', $.argument_list),
+      ),
+      seq(
         field('function', $._expression),
-        field('type_arguments', optional(prec.dynamic(2, $.type_arguments))),
         field('arguments', $.argument_list),
       ),
     )),
