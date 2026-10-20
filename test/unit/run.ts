@@ -1,5 +1,6 @@
 import { expect, test } from 'vitest';
 import { spawn } from 'node:child_process';
+import { mkdirSync, mkdtempSync, rmSync } from 'node:fs';
 import path from 'node:path';
 
 const repositoryRoot = path.resolve(import.meta.dirname, '../..');
@@ -19,41 +20,53 @@ export function testCommand(
   test(
     name,
     async () => {
-      const child = spawn(command[0], command.slice(1), {
-        cwd: repositoryRoot,
-        detached: true,
-        // The CLI caches compiled parsers by language name in a directory shared by every checkout and reuses one that is
-        // newer than the sources, so another checkout's parser could be tested instead of this one, also through a
-        // TREE_SITTER_LIBDIR set in the environment.
-        env: { ...process.env, TREE_SITTER_LIBDIR: `${repositoryRoot}/.tmp/tree-sitter-lib`, ...options.env },
-        stdio: ['ignore', 'pipe', 'pipe'],
-      });
-      let output = '';
-      child.stdout.on('data', (data) => (output += data));
-      child.stderr.on('data', (data) => (output += data));
-      const killGroup = (): void => {
-        try {
-          process.kill(-child.pid!, 'SIGKILL');
-        } catch {
-          // The group has already exited.
-        }
-      };
-      // The group no longer receives the terminal's Ctrl-C, so the runner forwards its own end to it.
-      const onSignal = (signal: NodeJS.Signals): void => {
-        killGroup();
-        process.kill(process.pid, signal);
-      };
-      process.on('exit', killGroup);
-      process.once('SIGINT', onSignal);
-      process.once('SIGTERM', onSignal);
-      const timer = setTimeout(killGroup, timeout);
-      const exitCode = await new Promise((resolve) => child.on('close', resolve));
-      clearTimeout(timer);
-      process.off('exit', killGroup);
-      process.off('SIGINT', onSignal);
-      process.off('SIGTERM', onSignal);
-      expect(exitCode, output).toBe(0);
-      options.check?.(output);
+      mkdirSync(path.join(repositoryRoot, '.tmp'), { recursive: true });
+      const temporaryRoot = mkdtempSync(path.join(repositoryRoot, '.tmp/command-'));
+      try {
+        const child = spawn(command[0], command.slice(1), {
+          cwd: repositoryRoot,
+          detached: true,
+          // The CLI caches compiled parsers by language name in a directory shared by every checkout and reuses one that is
+          // newer than the sources, so another checkout's parser could be tested instead of this one, also through a
+          // TREE_SITTER_LIBDIR set in the environment.
+          env: {
+            ...process.env,
+            // The CLI writes stdin to one fixed temporary filename, so parallel commands need separate directories.
+            TMPDIR: temporaryRoot,
+            TREE_SITTER_LIBDIR: `${repositoryRoot}/.tmp/tree-sitter-lib`,
+            ...options.env,
+          },
+          stdio: ['ignore', 'pipe', 'pipe'],
+        });
+        let output = '';
+        child.stdout.on('data', (data) => (output += data));
+        child.stderr.on('data', (data) => (output += data));
+        const killGroup = (): void => {
+          try {
+            process.kill(-child.pid!, 'SIGKILL');
+          } catch {
+            // The group has already exited.
+          }
+        };
+        // The group no longer receives the terminal's Ctrl-C, so the runner forwards its own end to it.
+        const onSignal = (signal: NodeJS.Signals): void => {
+          killGroup();
+          process.kill(process.pid, signal);
+        };
+        process.on('exit', killGroup);
+        process.once('SIGINT', onSignal);
+        process.once('SIGTERM', onSignal);
+        const timer = setTimeout(killGroup, timeout);
+        const exitCode = await new Promise((resolve) => child.on('close', resolve));
+        clearTimeout(timer);
+        process.off('exit', killGroup);
+        process.off('SIGINT', onSignal);
+        process.off('SIGTERM', onSignal);
+        expect(exitCode, output).toBe(0);
+        options.check?.(output);
+      } finally {
+        rmSync(temporaryRoot, { recursive: true, force: true });
+      }
     },
     timeout + KillMargin
   );
