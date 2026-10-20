@@ -31,6 +31,7 @@ export function testCommand(
           // TREE_SITTER_LIBDIR set in the environment.
           env: {
             ...process.env,
+            // The CLI writes stdin to one fixed temporary filename, so parallel commands need separate directories.
             TMPDIR: temporaryRoot,
             TREE_SITTER_LIBDIR: `${repositoryRoot}/.tmp/tree-sitter-lib`,
             ...options.env,
