@@ -1,4 +1,6 @@
-; Function calls
+(type_identifier) @type
+(field_identifier) @property
+(identifier) @variable
 
 (call_expression
   function: (identifier) @function)
@@ -11,21 +13,11 @@
   function: (selector_expression
     field: (field_identifier) @function.method))
 
-; Function definitions
-
 (function_declaration
   name: (identifier) @function)
 
 (method_declaration
   name: (field_identifier) @function.method)
-
-; Identifiers
-
-(type_identifier) @type
-(field_identifier) @property
-(identifier) @variable
-
-; Operators
 
 [
   "--"
@@ -67,8 +59,6 @@
   "~"
 ] @operator
 
-; Keywords
-
 [
   "break"
   "case"
@@ -96,8 +86,6 @@
   "type"
   "var"
 ] @keyword
-
-; Literals
 
 [
   (interpreted_string_literal)
