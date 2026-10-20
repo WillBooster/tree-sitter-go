@@ -694,6 +694,7 @@ module.exports = grammar({
 
     _generic_function: $ => choice(
       $.identifier,
+      alias(choice('new', 'make'), $.identifier),
       $.selector_expression,
       alias($._parenthesized_generic_function, $.parenthesized_expression),
     ),
