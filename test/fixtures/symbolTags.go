@@ -1,6 +1,7 @@
 package tags
 
 type Number = int
+type _ = int
 type Record struct { First, Second int; _ int }
 type Contract interface { Method() }
 
