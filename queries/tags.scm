@@ -24,8 +24,11 @@
     (parenthesized_expression (selector_expression field: (field_identifier) @name))
   ]) @reference.call
 
-(type_spec
-  name: (type_identifier) @name) @definition.type
+(
+  (type_spec
+    name: (type_identifier) @name) @definition.type
+  (#not-eq? @name "_")
+)
 
 (
   (type_alias

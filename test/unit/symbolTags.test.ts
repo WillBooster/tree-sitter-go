@@ -23,12 +23,23 @@ testCommand(
           'DirectVariable',
           'DirectConstant',
           'Function',
+          'Nested',
+          'Inner',
+          'NestedMember',
+          'Anonymous',
+          'PackageMember',
+          'Local',
+          'LocalMember',
+          'LocalMethod',
+          'CaseName',
         ])
       );
       expect(new Set(definitions).size).toBe(definitions.length);
       expect(definitions).not.toContain('_');
       expect(definitions).not.toContain('localValue');
       expect(definitions).not.toContain('localConstant');
+      expect(definitions).not.toContain('localInterface');
+      expect(definitions).not.toContain('localCases');
     },
   }
 );
