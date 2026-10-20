@@ -24,19 +24,47 @@
     (parenthesized_expression (selector_expression field: (field_identifier) @name))
   ]) @reference.call
 
-(type_spec
-  name: (type_identifier) @name) @definition.type
+(
+  (type_spec
+    name: (type_identifier) @name) @definition.type
+  (#not-eq? @name "_")
+)
+
+(
+  (type_alias
+    name: (type_identifier) @name) @definition.type
+  (#not-eq? @name "_")
+)
 
 (type_identifier) @name @reference.type
 
 (package_clause "package" (package_identifier) @name)
 
-(type_declaration (type_spec name: (type_identifier) @name type: (interface_type)))
+(method_elem
+  name: (field_identifier) @name) @definition.method
 
-(type_declaration (type_spec name: (type_identifier) @name type: (struct_type)))
+(
+  (field_declaration
+    name: (field_identifier) @name) @definition.field
+  (#not-eq? @name "_")
+)
 
 (import_declaration (import_spec) @name)
 
-(var_declaration (var_spec name: (identifier) @name))
+(
+  (source_file
+    (var_declaration
+      [
+        (var_spec name: (identifier) @name) @definition.variable
+        (var_spec_list
+          (var_spec name: (identifier) @name) @definition.variable)
+      ]))
+  (#not-eq? @name "_")
+)
 
-(const_declaration (const_spec name: (identifier) @name))
+(
+  (source_file
+    (const_declaration
+      (const_spec name: (identifier) @name) @definition.constant))
+  (#not-eq? @name "_")
+)

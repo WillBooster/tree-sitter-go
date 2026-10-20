@@ -3490,6 +3490,24 @@
           "name": "identifier"
         },
         {
+          "type": "ALIAS",
+          "content": {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "STRING",
+                "value": "new"
+              },
+              {
+                "type": "STRING",
+                "value": "make"
+              }
+            ]
+          },
+          "named": true,
+          "value": "identifier"
+        },
+        {
           "type": "SYMBOL",
           "name": "selector_expression"
         },
