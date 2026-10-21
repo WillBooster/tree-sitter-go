@@ -4236,7 +4236,7 @@ static const TSCharacterRange ts_lex_sym_identifier_character_set_2[] = {
 };
 
 static bool ts_lex(TSLexer *lexer, TSStateId state) {
-  UNUSED TSLexerPosition start_tags[2];
+  UNUSED TSLexerPosition start_tags[1];
   START_LEXER();
   eof = lookahead == 0 && lexer->eof(lexer);
   switch (state) {
@@ -5168,7 +5168,6 @@ static bool ts_lex(TSLexer *lexer, TSStateId state) {
       ts_lex_state_141:
       lexer->mark_start(lexer, &start_tags[0]);
       ACCEPT_TOKEN(aux_sym_raw_string_literal_token1);
-      if (lookahead == '/') { lexer->get_position(lexer, &start_tags[1]); ADVANCE(138); }
       if (('\t' <= lookahead && lookahead <= '\r') ||
           lookahead == ' ') TS_LEX_REPEAT(false, ts_lex_state_141);
       if (!eof &&
