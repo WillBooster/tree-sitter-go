@@ -14,13 +14,13 @@ to its authors and contributors. This is not an official release of that project
 
 This fork extends upstream's version 0.25.0 grammar with method type parameters and generates the parser with the
 [WillBooster/tree-sitter](https://github.com/WillBooster/tree-sitter) generator. The parser carries that fork's own ABI
-number (`0x57420007`), so it loads only with the WillBooster runtime, version 10.0.2 or later within 10.x
+number (`0x57420009`), so it loads only with the WillBooster runtime, version 13.0.0 or later within 13.x
 (`willbooster-tree-sitter`, `@willbooster/web-tree-sitter`), and not with upstream's tree-sitter.
 
 ## Usage
 
 The npm package ships `tree-sitter-go.wasm` for
-[@willbooster/web-tree-sitter](https://www.npmjs.com/package/@willbooster/web-tree-sitter) version 10.0.2 or later within 10.x, which runs in Node.js, Bun, browsers, and Cloudflare Workers. In Node.js and Bun, load the grammar from its path:
+[@willbooster/web-tree-sitter](https://www.npmjs.com/package/@willbooster/web-tree-sitter) version 13.0.0 or later within 13.x, which runs in Node.js, Bun, browsers, and Cloudflare Workers. In Node.js and Bun, load the grammar from its path:
 
 ```js
 import { fileURLToPath } from 'node:url';
@@ -66,7 +66,7 @@ fuzzed with:
 
 ```toml
 [dependencies]
-tree-sitter = { package = "willbooster-tree-sitter", version = "10.0.2" }
+tree-sitter = { package = "willbooster-tree-sitter", version = "13.0.0" }
 tree-sitter-go = { package = "willbooster-tree-sitter-go", version = "4" }
 ```
 
