@@ -63,6 +63,7 @@ const hexFloatLiteral = seq('0', choice('x', 'X'), hexMantissa, hexExponent);
 const floatLiteral = choice(decimalFloatLiteral, hexFloatLiteral);
 
 const imaginaryLiteral = seq(choice(decimalDigits, intLiteral, floatLiteral), 'i');
+const formatArgumentIndex = /\[0*[1-9][0-9]*\]/;
 
 module.exports = grammar({
   name: 'go',
@@ -908,9 +909,9 @@ module.exports = grammar({
     format_specifier: _ => token.immediate(prec(2, seq(
       '%',
       /[+#0 -]*/,
-      optional(choice(/[0-9]+/, seq(optional(/\[[1-9][0-9]*\]/), '*'))),
-      optional(seq('.', choice(/[0-9]*/, seq(optional(/\[[1-9][0-9]*\]/), '*')))),
-      optional(/\[[1-9][0-9]*\]/),
+      optional(choice(/[0-9]+/, seq(optional(formatArgumentIndex), '*'))),
+      optional(seq('.', choice(/[0-9]*/, seq(optional(formatArgumentIndex), '*')))),
+      optional(formatArgumentIndex),
       /[vTtbcdoOqxXUeEfFgGspw%]/,
     ))),
 

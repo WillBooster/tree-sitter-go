@@ -4898,7 +4898,7 @@
                           "members": [
                             {
                               "type": "PATTERN",
-                              "value": "\\[[1-9][0-9]*\\]"
+                              "value": "\\[0*[1-9][0-9]*\\]"
                             },
                             {
                               "type": "BLANK"
@@ -4943,7 +4943,7 @@
                               "members": [
                                 {
                                   "type": "PATTERN",
-                                  "value": "\\[[1-9][0-9]*\\]"
+                                  "value": "\\[0*[1-9][0-9]*\\]"
                                 },
                                 {
                                   "type": "BLANK"
@@ -4970,7 +4970,7 @@
               "members": [
                 {
                   "type": "PATTERN",
-                  "value": "\\[[1-9][0-9]*\\]"
+                  "value": "\\[0*[1-9][0-9]*\\]"
                 },
                 {
                   "type": "BLANK"

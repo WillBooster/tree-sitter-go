@@ -103,7 +103,7 @@
       (raw_string_literal
         . [(raw_string_literal_content) (format_specifier) @string.special]* .)
     ]))
-  (#match? @function "^(Printf|Sprintf|Errorf|Scanf|Fatalf|Panicf|Logf|Debugf|Infof|Warnf|Warningf|Tracef)$"))
+  (#match? @function "^(Printf|Sprintf|Errorf|Scanf|Fatalf|Panicf|Skipf|Logf|Debugf|Infof|Warnf|Warningf|Tracef)$"))
 
 ((call_expression
   function: (selector_expression field: (field_identifier) @function.method)
@@ -115,13 +115,14 @@
       (raw_string_literal
         . [(raw_string_literal_content) (format_specifier) @string.special]* .)
     ]))
-  (#match? @function.method "^(Printf|Sprintf|Errorf|Scanf|Fatalf|Panicf|Logf|Debugf|Infof|Warnf|Warningf|Tracef)$"))
+  (#match? @function.method "^(Printf|Sprintf|Errorf|Scanf|Fatalf|Panicf|Skipf|Logf|Debugf|Infof|Warnf|Warningf|Tracef)$"))
 
 ((call_expression
   function: (identifier) @function
   arguments: (argument_list
     . (comment)*
     . (_)
+    . (comment)*
     . ","
     . (comment)*
     . [
@@ -137,6 +138,7 @@
   arguments: (argument_list
     . (comment)*
     . (_)
+    . (comment)*
     . ","
     . (comment)*
     . [

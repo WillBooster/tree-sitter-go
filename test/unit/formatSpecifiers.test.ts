@@ -28,6 +28,7 @@ test('exposes format tokens with exact source ranges without rejecting arbitrary
       '%+v',
       '%w',
       '%02d',
+      '%d',
       '%s',
       '%v',
       '%d',
@@ -40,6 +41,8 @@ test('exposes format tokens with exact source ranges without rejecting arbitrary
       '%O',
       '%U',
       '% x',
+      '%[02]*.[01]*[03]f',
+      '%[01]d',
       '%d',
       '%[1]d',
       '%d',
@@ -85,6 +88,7 @@ testCommand(
         '%+v',
         '%w',
         '%02d',
+        '%d',
         '%s',
         '%s',
         '%#08.2f',
@@ -93,6 +97,8 @@ testCommand(
         '%O',
         '%U',
         '% x',
+        '%[02]*.[01]*[03]f',
+        '%[01]d',
         '%d',
         '%[1]d',
         '%s',
@@ -104,6 +110,7 @@ testCommand(
       expect(output).toContain('plain %v');
       expect(output).toContain('%Q trailing %');
       expect(output).toContain('%d input');
+      expect(output).toContain("\t<span class='function'>Printf</span>(");
     },
   }
 );
