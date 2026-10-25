@@ -1,0 +1,74 @@
+================================================================================
+Formatting tokens preserve Go string syntax
+================================================================================
+
+package main
+var _ = "%[02]*.[01]*[03]f %% %#08.2f %.[2]*[1]s %9.f"
+var _ = `raw %d
+%+v`
+var _ = []string{"", ``, "%", "%Q", "%[000]d", "%[2]*.", "%\nd", "%\x64"}
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (package_clause
+    (package_identifier))
+  (var_declaration
+    (var_spec
+      (identifier)
+      (expression_list
+        (interpreted_string_literal
+          (format_specifier)
+          (interpreted_string_literal_content)
+          (format_specifier)
+          (interpreted_string_literal_content)
+          (format_specifier)
+          (interpreted_string_literal_content)
+          (format_specifier)
+          (interpreted_string_literal_content)
+          (format_specifier)))))
+  (var_declaration
+    (var_spec
+      (identifier)
+      (expression_list
+        (raw_string_literal
+          (raw_string_literal_content)
+          (format_specifier)
+          (raw_string_literal_content)
+          (format_specifier)))))
+  (var_declaration
+    (var_spec
+      (identifier)
+      (expression_list
+        (composite_literal
+          (slice_type
+            (type_identifier))
+          (literal_value
+            (literal_element
+              (interpreted_string_literal))
+            (literal_element
+              (raw_string_literal))
+            (literal_element
+              (interpreted_string_literal
+                (interpreted_string_literal_content)))
+            (literal_element
+              (interpreted_string_literal
+                (interpreted_string_literal_content)
+                (interpreted_string_literal_content)))
+            (literal_element
+              (interpreted_string_literal
+                (interpreted_string_literal_content)
+                (interpreted_string_literal_content)))
+            (literal_element
+              (interpreted_string_literal
+                (interpreted_string_literal_content)
+                (interpreted_string_literal_content)))
+            (literal_element
+              (interpreted_string_literal
+                (interpreted_string_literal_content)
+                (escape_sequence)
+                (interpreted_string_literal_content)))
+            (literal_element
+              (interpreted_string_literal
+                (interpreted_string_literal_content)
+                (escape_sequence)))))))))
