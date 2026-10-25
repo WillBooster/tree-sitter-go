@@ -93,6 +93,60 @@
   (rune_literal)
 ] @string
 
+((call_expression
+  function: (identifier) @function
+  arguments: (argument_list
+    . (comment)*
+    . [
+      (interpreted_string_literal
+        . [(interpreted_string_literal_content) (escape_sequence) (format_specifier) @string.special]* .)
+      (raw_string_literal
+        . [(raw_string_literal_content) (format_specifier) @string.special]* .)
+    ]))
+  (#match? @function "^(Printf|Sprintf|Errorf|Scanf|Fatalf|Panicf|Logf|Debugf|Infof|Warnf|Warningf|Tracef)$"))
+
+((call_expression
+  function: (selector_expression field: (field_identifier) @function.method)
+  arguments: (argument_list
+    . (comment)*
+    . [
+      (interpreted_string_literal
+        . [(interpreted_string_literal_content) (escape_sequence) (format_specifier) @string.special]* .)
+      (raw_string_literal
+        . [(raw_string_literal_content) (format_specifier) @string.special]* .)
+    ]))
+  (#match? @function.method "^(Printf|Sprintf|Errorf|Scanf|Fatalf|Panicf|Logf|Debugf|Infof|Warnf|Warningf|Tracef)$"))
+
+((call_expression
+  function: (identifier) @function
+  arguments: (argument_list
+    . (comment)*
+    . (_)
+    . ","
+    . (comment)*
+    . [
+      (interpreted_string_literal
+        . [(interpreted_string_literal_content) (escape_sequence) (format_specifier) @string.special]* .)
+      (raw_string_literal
+        . [(raw_string_literal_content) (format_specifier) @string.special]* .)
+    ]))
+  (#match? @function "^(Fprintf|Appendf|Fscanf|Sscanf)$"))
+
+((call_expression
+  function: (selector_expression field: (field_identifier) @function.method)
+  arguments: (argument_list
+    . (comment)*
+    . (_)
+    . ","
+    . (comment)*
+    . [
+      (interpreted_string_literal
+        . [(interpreted_string_literal_content) (escape_sequence) (format_specifier) @string.special]* .)
+      (raw_string_literal
+        . [(raw_string_literal_content) (format_specifier) @string.special]* .)
+    ]))
+  (#match? @function.method "^(Fprintf|Appendf|Fscanf|Sscanf)$"))
+
 (escape_sequence) @escape
 
 [

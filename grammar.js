@@ -886,18 +886,33 @@ module.exports = grammar({
 
     raw_string_literal: $ => seq(
       '`',
-      alias(token(prec(1, /[^`]*/)), $.raw_string_literal_content),
-      '`',
+      repeat(choice(
+        alias(token.immediate(prec(1, /[^`%]+/)), $.raw_string_literal_content),
+        alias(token.immediate('%'), $.raw_string_literal_content),
+        $.format_specifier,
+      )),
+      token.immediate('`'),
     ),
 
     interpreted_string_literal: $ => seq(
       '"',
       repeat(choice(
-        alias(token.immediate(prec(1, /[^"\n\\]+/)), $.interpreted_string_literal_content),
+        alias(token.immediate(prec(1, /[^"\n\\%]+/)), $.interpreted_string_literal_content),
+        alias(token.immediate('%'), $.interpreted_string_literal_content),
+        $.format_specifier,
         $.escape_sequence,
       )),
       token.immediate('"'),
     ),
+
+    format_specifier: _ => token.immediate(prec(2, seq(
+      '%',
+      /[+#0 -]*/,
+      optional(choice(/[0-9]+/, seq(optional(/\[[1-9][0-9]*\]/), '*'))),
+      optional(seq('.', choice(/[0-9]*/, seq(optional(/\[[1-9][0-9]*\]/), '*')))),
+      optional(/\[[1-9][0-9]*\]/),
+      /[vTtbcdoOqxXUeEfFgGspw%]/,
+    ))),
 
     escape_sequence: _ => token.immediate(seq(
       '\\',
