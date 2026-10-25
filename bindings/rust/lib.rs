@@ -1,7 +1,7 @@
 //! This crate provides Go language support for the [tree-sitter] parsing library.
 //!
 //! The parser carries the ABI number of the WillBooster fork of tree-sitter, so it loads only with
-//! the `willbooster-tree-sitter` runtime, version 13.0.0 or later within 13.x.
+//! the `willbooster-tree-sitter` runtime, version 15.0.0 or later within 15.x.
 //!
 //! Typically, you will use the [`LANGUAGE`] constant to add this language to a
 //! tree-sitter [`Parser`], and then use the parser to parse some code:
@@ -17,7 +17,7 @@
 //! assert!(!tree.root_node().has_error());
 //! ```
 //!
-//! [`Parser`]: https://docs.rs/willbooster-tree-sitter/13/tree_sitter/struct.Parser.html
+//! [`Parser`]: https://docs.rs/willbooster-tree-sitter/15.0.0/tree_sitter/struct.Parser.html
 //! [tree-sitter]: https://tree-sitter.github.io/
 
 use tree_sitter_language::LanguageFn;
