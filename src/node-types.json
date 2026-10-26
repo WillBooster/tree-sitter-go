@@ -264,6 +264,16 @@
     ]
   },
   {
+    "type": "\"",
+    "named": false,
+    "fields": {}
+  },
+  {
+    "type": ":",
+    "named": false,
+    "fields": {}
+  },
+  {
     "type": "argument_list",
     "named": true,
     "fields": {},
@@ -1893,9 +1903,18 @@
         {
           "type": "raw_string_literal_content",
           "named": true
+        },
+        {
+          "type": "struct_tag_pair",
+          "named": true
         }
       ]
     }
+  },
+  {
+    "type": "raw_string_literal_content",
+    "named": true,
+    "fields": {}
   },
   {
     "type": "receive_statement",
@@ -2146,6 +2165,32 @@
           "named": true
         }
       ]
+    }
+  },
+  {
+    "type": "struct_tag_pair",
+    "named": true,
+    "fields": {
+      "key": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "tag_name",
+            "named": true
+          }
+        ]
+      },
+      "value": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "interpreted_string_literal",
+            "named": true
+          }
+        ]
+      }
     }
   },
   {
@@ -2716,10 +2761,6 @@
     "named": false
   },
   {
-    "type": "\"",
-    "named": false
-  },
-  {
     "type": "%",
     "named": false
   },
@@ -2805,10 +2846,6 @@
   },
   {
     "type": "/=",
-    "named": false
-  },
-  {
-    "type": ":",
     "named": false
   },
   {
@@ -3021,10 +3058,6 @@
     "named": false
   },
   {
-    "type": "raw_string_literal_content",
-    "named": true
-  },
-  {
     "type": "return",
     "named": false
   },
@@ -3043,6 +3076,10 @@
   {
     "type": "switch",
     "named": false
+  },
+  {
+    "type": "tag_name",
+    "named": true
   },
   {
     "type": "true",

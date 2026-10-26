@@ -86,6 +86,7 @@ module.exports = grammar({
   word: $ => $.identifier,
 
   conflicts: $ => [
+    [$._raw_struct_tag, $.struct_tag_pair],
     [$._generic_function, $._expression],
     [$._generic_function, $._simple_type, $._expression],
     [$._generic_function, $._simple_type, $.generic_type, $._expression],
@@ -393,8 +394,41 @@ module.exports = grammar({
           )),
         ),
       ),
-      field('tag', optional($._string_literal)),
+      field('tag', optional(choice(
+        $.interpreted_string_literal,
+        alias($._raw_struct_tag, $.raw_string_literal),
+      ))),
     ),
+
+    _raw_struct_tag: $ => seq(
+      '`',
+      repeat(choice(
+        $.struct_tag_pair,
+        alias($._struct_tag_key, $.raw_string_literal_content),
+        alias($._struct_tag_colon, $.raw_string_literal_content),
+        alias($._struct_tag_quote, $.raw_string_literal_content),
+        alias(token.immediate(/[\x00-\x20\x7f]/), $.raw_string_literal_content),
+      )),
+      token.immediate('`'),
+    ),
+
+    struct_tag_pair: $ => prec.dynamic(1, seq(
+      field('key', alias($._struct_tag_key, $.tag_name)),
+      alias($._struct_tag_colon, ':'),
+      field('value', alias($._struct_tag_value, $.interpreted_string_literal)),
+    )),
+
+    _struct_tag_key: _ => token.immediate(/[^\x00-\x20\x7f:"`]+/),
+
+    _struct_tag_value: $ => interpretedStringLiteral(
+      $,
+      alias($._struct_tag_quote, '"'),
+      alias($._struct_tag_quote, '"'),
+    ),
+
+    _struct_tag_colon: _ => token.immediate(':'),
+
+    _struct_tag_quote: _ => token.immediate('"'),
 
     interface_type: $ => seq(
       'interface',
@@ -895,16 +929,7 @@ module.exports = grammar({
       token.immediate('`'),
     ),
 
-    interpreted_string_literal: $ => seq(
-      '"',
-      repeat(choice(
-        alias(token.immediate(prec(1, /[^"\n\\%]+/)), $.interpreted_string_literal_content),
-        alias(token.immediate('%'), $.interpreted_string_literal_content),
-        $.format_specifier,
-        $.escape_sequence,
-      )),
-      token.immediate('"'),
-    ),
+    interpreted_string_literal: $ => interpretedStringLiteral($, '"'),
 
     format_specifier: _ => token.immediate(prec(2, seq(
       '%',
@@ -1012,4 +1037,17 @@ function commaSep1(rule) {
  */
 function commaSep(rule) {
   return optional(commaSep1(rule));
+}
+
+function interpretedStringLiteral($, openingQuote, closingQuote = token.immediate('"')) {
+  return seq(
+    openingQuote,
+    repeat(choice(
+      alias(token.immediate(prec(1, /[^"\n\\%]+/)), $.interpreted_string_literal_content),
+      alias(token.immediate('%'), $.interpreted_string_literal_content),
+      $.format_specifier,
+      $.escape_sequence,
+    )),
+    closingQuote,
+  );
 }

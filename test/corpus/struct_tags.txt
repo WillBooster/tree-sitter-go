@@ -1,0 +1,78 @@
+================================================================================
+Raw struct tags expose pairs and preserve arbitrary strings
+================================================================================
+
+package tags
+type Record struct {
+ Name string `json:"name"custom-tag:"value"`
+ Broken string `json:"unterminated`
+ Arbitrary string `plain : "other text`
+ Spaced string `json: "value"`
+ Quoted string "json:\"name\""
+ Empty string ``
+}
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (package_clause
+    (package_identifier))
+  (type_declaration
+    (type_spec
+      (type_identifier)
+      (struct_type
+        (field_declaration_list
+          (field_declaration
+            (field_identifier)
+            (type_identifier)
+            (raw_string_literal
+              (struct_tag_pair
+                (tag_name)
+                (interpreted_string_literal
+                  (interpreted_string_literal_content)))
+              (struct_tag_pair
+                (tag_name)
+                (interpreted_string_literal
+                  (interpreted_string_literal_content)))))
+          (field_declaration
+            (field_identifier)
+            (type_identifier)
+            (raw_string_literal
+              (raw_string_literal_content)
+              (raw_string_literal_content)
+              (raw_string_literal_content)
+              (raw_string_literal_content)))
+          (field_declaration
+            (field_identifier)
+            (type_identifier)
+            (raw_string_literal
+              (raw_string_literal_content)
+              (raw_string_literal_content)
+              (raw_string_literal_content)
+              (raw_string_literal_content)
+              (raw_string_literal_content)
+              (raw_string_literal_content)
+              (raw_string_literal_content)
+              (raw_string_literal_content)))
+          (field_declaration
+            (field_identifier)
+            (type_identifier)
+            (raw_string_literal
+              (raw_string_literal_content)
+              (raw_string_literal_content)
+              (raw_string_literal_content)
+              (raw_string_literal_content)
+              (raw_string_literal_content)
+              (raw_string_literal_content)))
+          (field_declaration
+            (field_identifier)
+            (type_identifier)
+            (interpreted_string_literal
+              (interpreted_string_literal_content)
+              (escape_sequence)
+              (interpreted_string_literal_content)
+              (escape_sequence)))
+          (field_declaration
+            (field_identifier)
+            (type_identifier)
+            (raw_string_literal)))))))
