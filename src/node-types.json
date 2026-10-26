@@ -264,6 +264,16 @@
     ]
   },
   {
+    "type": "\"",
+    "named": false,
+    "fields": {}
+  },
+  {
+    "type": ":",
+    "named": false,
+    "fields": {}
+  },
+  {
     "type": "argument_list",
     "named": true,
     "fields": {},
@@ -1893,9 +1903,18 @@
         {
           "type": "raw_string_literal_content",
           "named": true
+        },
+        {
+          "type": "struct_tag_pair",
+          "named": true
         }
       ]
     }
+  },
+  {
+    "type": "raw_string_literal_content",
+    "named": true,
+    "fields": {}
   },
   {
     "type": "receive_statement",
@@ -2149,6 +2168,32 @@
     }
   },
   {
+    "type": "struct_tag_pair",
+    "named": true,
+    "fields": {
+      "key": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "tag_name",
+            "named": true
+          }
+        ]
+      },
+      "value": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "interpreted_string_literal",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
     "type": "struct_type",
     "named": true,
     "fields": {},
@@ -2158,6 +2203,25 @@
       "types": [
         {
           "type": "field_declaration_list",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "tag_name",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "format_specifier",
+          "named": true
+        },
+        {
+          "type": "raw_string_literal_content",
           "named": true
         }
       ]
@@ -2716,10 +2780,6 @@
     "named": false
   },
   {
-    "type": "\"",
-    "named": false
-  },
-  {
     "type": "%",
     "named": false
   },
@@ -2805,10 +2865,6 @@
   },
   {
     "type": "/=",
-    "named": false
-  },
-  {
-    "type": ":",
     "named": false
   },
   {
@@ -3019,10 +3075,6 @@
   {
     "type": "range",
     "named": false
-  },
-  {
-    "type": "raw_string_literal_content",
-    "named": true
   },
   {
     "type": "return",

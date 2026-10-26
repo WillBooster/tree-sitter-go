@@ -1,5 +1,6 @@
 (type_identifier) @type
 (field_identifier) @property
+(tag_name) @attribute
 (identifier) @variable
 
 (call_expression

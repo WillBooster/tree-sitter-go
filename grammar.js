@@ -86,6 +86,7 @@ module.exports = grammar({
   word: $ => $.identifier,
 
   conflicts: $ => [
+    [$._raw_struct_tag, $.struct_tag_pair],
     [$._generic_function, $._expression],
     [$._generic_function, $._simple_type, $._expression],
     [$._generic_function, $._simple_type, $.generic_type, $._expression],
@@ -393,8 +394,57 @@ module.exports = grammar({
           )),
         ),
       ),
-      field('tag', optional($._string_literal)),
+      field('tag', optional(choice(
+        $.interpreted_string_literal,
+        alias($._raw_struct_tag, $.raw_string_literal),
+      ))),
     ),
+
+    _raw_struct_tag: $ => seq(
+      '`',
+      repeat(choice(
+        $.struct_tag_pair,
+        alias($._struct_tag_key_content, $.raw_string_literal_content),
+        alias($._struct_tag_percent, $.raw_string_literal_content),
+        alias($._struct_tag_key_format_specifier, $.format_specifier),
+        $.format_specifier,
+        alias($._struct_tag_colon, $.raw_string_literal_content),
+        alias($._struct_tag_quote, $.raw_string_literal_content),
+        alias(token.immediate(/[\x00-\x20\x7f]/), $.raw_string_literal_content),
+      )),
+      token.immediate('`'),
+    ),
+
+    struct_tag_pair: $ => prec.dynamic(1, seq(
+      field('key', alias($._struct_tag_key, $.tag_name)),
+      alias($._struct_tag_colon, ':'),
+      field('value', alias($._struct_tag_value, $.interpreted_string_literal)),
+    )),
+
+    _struct_tag_key: $ => repeat1(choice(
+      $._struct_tag_key_content,
+      alias($._struct_tag_percent, $.raw_string_literal_content),
+      alias($._struct_tag_key_format_specifier, $.format_specifier),
+    )),
+
+    _struct_tag_key_content: _ => token.immediate(/[^\x00-\x20\x7f:"`%]+/),
+
+    _struct_tag_percent: _ => token.immediate(/%/),
+
+    _struct_tag_key_format_specifier: _ => formatSpecifier(/[+#0-]*/, 3),
+
+    _struct_tag_value: $ => interpretedStringLiteral(
+      $,
+      alias($._struct_tag_quote, '"'),
+      alias($._struct_tag_quote, '"'),
+      true,
+    ),
+
+    _struct_tag_escape_sequence: _ => escapeSequence(/[^xuU`\n]/),
+
+    _struct_tag_colon: _ => token.immediate(':'),
+
+    _struct_tag_quote: _ => token.immediate('"'),
 
     interface_type: $ => seq(
       'interface',
@@ -895,36 +945,11 @@ module.exports = grammar({
       token.immediate('`'),
     ),
 
-    interpreted_string_literal: $ => seq(
-      '"',
-      repeat(choice(
-        alias(token.immediate(prec(1, /[^"\n\\%]+/)), $.interpreted_string_literal_content),
-        alias(token.immediate('%'), $.interpreted_string_literal_content),
-        $.format_specifier,
-        $.escape_sequence,
-      )),
-      token.immediate('"'),
-    ),
+    interpreted_string_literal: $ => interpretedStringLiteral($, '"'),
 
-    format_specifier: _ => token.immediate(prec(2, seq(
-      '%',
-      /[+#0 -]*/,
-      optional(choice(/[0-9]+/, seq(optional(formatArgumentIndex), '*'))),
-      optional(seq('.', choice(/[0-9]*/, seq(optional(formatArgumentIndex), '*')))),
-      optional(formatArgumentIndex),
-      /[vTtbcdoOqxXUeEfFgGspw%]/,
-    ))),
+    format_specifier: _ => formatSpecifier(/[+#0 -]*/),
 
-    escape_sequence: _ => token.immediate(seq(
-      '\\',
-      choice(
-        /[^xuU]/,
-        /\d{2,3}/,
-        /x[0-9a-fA-F]{2,}/,
-        /u[0-9a-fA-F]{4}/,
-        /U[0-9a-fA-F]{8}/,
-      ),
-    )),
+    escape_sequence: _ => escapeSequence(/[^xuU]/),
 
     int_literal: _ => token(intLiteral),
 
@@ -1012,4 +1037,41 @@ function commaSep1(rule) {
  */
 function commaSep(rule) {
   return optional(commaSep1(rule));
+}
+
+function interpretedStringLiteral($, openingQuote, closingQuote = token.immediate('"'), insideRawTag = false) {
+  return seq(
+    openingQuote,
+    repeat(choice(
+      alias(token.immediate(prec(1, insideRawTag ? /[^"`\n\\%]+/ : /[^"\n\\%]+/)), $.interpreted_string_literal_content),
+      alias(token.immediate('%'), $.interpreted_string_literal_content),
+      $.format_specifier,
+      insideRawTag ? alias($._struct_tag_escape_sequence, $.escape_sequence) : $.escape_sequence,
+    )),
+    closingQuote,
+  );
+}
+
+function escapeSequence(simpleEscape) {
+  return token.immediate(seq(
+    '\\',
+    choice(
+      simpleEscape,
+      /\d{2,3}/,
+      /x[0-9a-fA-F]{2,}/,
+      /u[0-9a-fA-F]{4}/,
+      /U[0-9a-fA-F]{8}/,
+    ),
+  ));
+}
+
+function formatSpecifier(flags, precedence = 2) {
+  return token.immediate(prec(precedence, seq(
+    '%',
+    flags,
+    optional(choice(/[0-9]+/, seq(optional(formatArgumentIndex), '*'))),
+    optional(seq('.', choice(/[0-9]*/, seq(optional(formatArgumentIndex), '*')))),
+    optional(formatArgumentIndex),
+    /[vTtbcdoOqxXUeEfFgGspw%]/,
+  )));
 }

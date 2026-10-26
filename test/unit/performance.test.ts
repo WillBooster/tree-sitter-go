@@ -23,29 +23,39 @@ test('uses a Wasm build built from the current parser', () => {
 });
 
 test('recovers from an error on each line in linear time', { timeout: 60_000 }, () => {
-  const small = '$ a\n'.repeat(2000);
-  const large = '$ a\n'.repeat(20_000);
-  parseCpuTime(large);
-  parseCpuTime(large);
+  expectLinearScaling('$ a\n'.repeat(2000), '$ a\n'.repeat(20_000), true);
+});
+
+test('parses ambiguous raw tag contents in linear time', { timeout: 60_000 }, () => {
+  expectLinearScaling(rawTagSource(2000), rawTagSource(20_000), false);
+});
+
+function rawTagSource(count: number): string {
+  return 'package tags\ntype Record struct { F string `' + 'x:"a '.repeat(count) + '` }\n';
+}
+
+function expectLinearScaling(small: string, large: string, expectError: boolean): void {
+  parseCpuTime(large, expectError);
+  parseCpuTime(large, expectError);
   let smallFastest = Infinity;
   let largeFastest = Infinity;
   for (let run = 0; run < 5; run++) {
-    smallFastest = Math.min(smallFastest, parseCpuTime(small));
-    largeFastest = Math.min(largeFastest, parseCpuTime(large));
+    smallFastest = Math.min(smallFastest, parseCpuTime(small, expectError));
+    largeFastest = Math.min(largeFastest, parseCpuTime(large, expectError));
   }
   expect(
     largeFastest / smallFastest,
     `parse CPU microseconds: small=${smallFastest}, large=${largeFastest}`
   ).toBeLessThan(18);
-});
+}
 
-function parseCpuTime(source: string): number {
+function parseCpuTime(source: string, expectError: boolean): number {
   const start = process.threadCpuUsage();
   const tree = parser.parse(source);
   const { system, user } = process.threadCpuUsage(start);
   if (!tree) throw new Error('The parser returned no tree');
   const { hasError } = tree.rootNode;
   tree.delete();
-  expect(hasError).toBe(true);
+  expect(hasError).toBe(expectError);
   return system + user;
 }
