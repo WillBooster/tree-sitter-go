@@ -404,7 +404,10 @@ module.exports = grammar({
       '`',
       repeat(choice(
         $.struct_tag_pair,
-        alias($._struct_tag_key, $.raw_string_literal_content),
+        alias($._struct_tag_key_content, $.raw_string_literal_content),
+        alias($._struct_tag_percent, $.raw_string_literal_content),
+        alias($._struct_tag_key_format_specifier, $.format_specifier),
+        $.format_specifier,
         alias($._struct_tag_colon, $.raw_string_literal_content),
         alias($._struct_tag_quote, $.raw_string_literal_content),
         alias(token.immediate(/[\x00-\x20\x7f]/), $.raw_string_literal_content),
@@ -418,7 +421,17 @@ module.exports = grammar({
       field('value', alias($._struct_tag_value, $.interpreted_string_literal)),
     )),
 
-    _struct_tag_key: _ => token.immediate(/[^\x00-\x20\x7f:"`]+/),
+    _struct_tag_key: $ => repeat1(choice(
+      $._struct_tag_key_content,
+      alias($._struct_tag_percent, $.raw_string_literal_content),
+      alias($._struct_tag_key_format_specifier, $.format_specifier),
+    )),
+
+    _struct_tag_key_content: _ => token.immediate(/[^\x00-\x20\x7f:"`%]+/),
+
+    _struct_tag_percent: _ => token.immediate(/%/),
+
+    _struct_tag_key_format_specifier: _ => formatSpecifier(/[+#0-]*/, 3),
 
     _struct_tag_value: $ => interpretedStringLiteral(
       $,
@@ -934,14 +947,7 @@ module.exports = grammar({
 
     interpreted_string_literal: $ => interpretedStringLiteral($, '"'),
 
-    format_specifier: _ => token.immediate(prec(2, seq(
-      '%',
-      /[+#0 -]*/,
-      optional(choice(/[0-9]+/, seq(optional(formatArgumentIndex), '*'))),
-      optional(seq('.', choice(/[0-9]*/, seq(optional(formatArgumentIndex), '*')))),
-      optional(formatArgumentIndex),
-      /[vTtbcdoOqxXUeEfFgGspw%]/,
-    ))),
+    format_specifier: _ => formatSpecifier(/[+#0 -]*/),
 
     escape_sequence: _ => escapeSequence(/[^xuU]/),
 
@@ -1057,4 +1063,15 @@ function escapeSequence(simpleEscape) {
       /U[0-9a-fA-F]{8}/,
     ),
   ));
+}
+
+function formatSpecifier(flags, precedence = 2) {
+  return token.immediate(prec(precedence, seq(
+    '%',
+    flags,
+    optional(choice(/[0-9]+/, seq(optional(formatArgumentIndex), '*'))),
+    optional(seq('.', choice(/[0-9]*/, seq(optional(formatArgumentIndex), '*')))),
+    optional(formatArgumentIndex),
+    /[vTtbcdoOqxXUeEfFgGspw%]/,
+  )));
 }

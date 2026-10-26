@@ -15,6 +15,14 @@ type Record struct {
 type Boundary struct { First string `a:"unfinished`; Second string `b:"second"` }
 type EscapedBoundary struct { First string `a:"unfinished\`; Second string `b:"second"` }
 
+type Fallback struct {
+ Plain string `plain %d`
+ Key string `prefix%d:"value" %s:"other"`
+ Broken string `prefix%d:"unterminated %v`
+ Quoted string `"garbage %q"`
+ SpaceFlag string `% d:"not a key"`
+}
+
 --------------------------------------------------------------------------------
 
 (source_file
@@ -120,4 +128,64 @@ type EscapedBoundary struct { First string `a:"unfinished\`; Second string `b:"s
               (struct_tag_pair
                 (tag_name)
                 (interpreted_string_literal
-                  (interpreted_string_literal_content))))))))))
+                  (interpreted_string_literal_content)))))))))
+  (type_declaration
+    (type_spec
+      (type_identifier)
+      (struct_type
+        (field_declaration_list
+          (field_declaration
+            (field_identifier)
+            (type_identifier)
+            (raw_string_literal
+              (raw_string_literal_content)
+              (raw_string_literal_content)
+              (format_specifier)))
+          (field_declaration
+            (field_identifier)
+            (type_identifier)
+            (raw_string_literal
+              (struct_tag_pair
+                (tag_name
+                  (format_specifier))
+                (interpreted_string_literal
+                  (interpreted_string_literal_content)))
+              (raw_string_literal_content)
+              (struct_tag_pair
+                (tag_name
+                  (format_specifier))
+                (interpreted_string_literal
+                  (interpreted_string_literal_content)))))
+          (field_declaration
+            (field_identifier)
+            (type_identifier)
+            (raw_string_literal
+              (raw_string_literal_content)
+              (format_specifier)
+              (raw_string_literal_content)
+              (raw_string_literal_content)
+              (raw_string_literal_content)
+              (raw_string_literal_content)
+              (format_specifier)))
+          (field_declaration
+            (field_identifier)
+            (type_identifier)
+            (raw_string_literal
+              (raw_string_literal_content)
+              (raw_string_literal_content)
+              (raw_string_literal_content)
+              (format_specifier)
+              (raw_string_literal_content)))
+          (field_declaration
+            (field_identifier)
+            (type_identifier)
+            (raw_string_literal
+              (format_specifier)
+              (raw_string_literal_content)
+              (raw_string_literal_content)
+              (raw_string_literal_content)
+              (raw_string_literal_content)
+              (raw_string_literal_content)
+              (raw_string_literal_content)
+              (raw_string_literal_content)
+              (raw_string_literal_content))))))))

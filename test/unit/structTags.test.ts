@@ -40,6 +40,11 @@ test('exposes tag key/value fields and restores them after an incomplete-value e
       ['c', '"third"'],
       ['b', '"second"'],
       ['b', '"second"'],
+      ['prefix%d', '"value"'],
+      ['%s', '"other"'],
+      ['unknown%Q', '"x"'],
+      ['percent%%', '"value"'],
+      ['bare%', '"value"'],
     ]);
     expect(tree.rootNode.descendantsOfType('field_identifier').filter((node) => node.text === 'Second')).toHaveLength(
       3
@@ -47,7 +52,23 @@ test('exposes tag key/value fields and restores them after an incomplete-value e
     const unicode = tree.rootNode.descendantsOfType('tag_name').find((node) => node.text === '界.键')!;
     expect(unicode.startIndex).toBe(Source.indexOf('界.键'));
     expect(unicode.endIndex).toBe(unicode.startIndex + '界.键'.length);
-    expect(tree.rootNode.descendantsOfType('format_specifier').map((node) => node.text)).toEqual(['%[01]d', '%[01]d']);
+    const formats = tree.rootNode.descendantsOfType('format_specifier');
+    expect(formats.map((node) => node.text)).toEqual([
+      '%[01]d',
+      '%[01]d',
+      '%d',
+      '%q',
+      '%d',
+      '%s',
+      '%d',
+      '%v',
+      '%q',
+      '% d',
+      '%%',
+    ]);
+    const fallbackFormat = formats.find((node) => node.startIndex === Source.indexOf('plain %d') + 'plain '.length)!;
+    expect(fallbackFormat.text).toBe('%d');
+    expect(fallbackFormat.endIndex).toBe(fallbackFormat.startIndex + 2);
 
     const start = Source.indexOf('only:"value"') + 'only:"value'.length;
     const prefix = Source.slice(0, start).split('\n');
@@ -130,6 +151,11 @@ testCommand(
         'c',
         'b',
         'b',
+        'prefix%d',
+        '%s',
+        'unknown%Q',
+        'percent%%',
+        'bare%',
       ]);
       expect(output).toContain('`json:&quot;ordinary&quot;`');
       expect(output.match(/<span class='string special'>/g)).toHaveLength(1);

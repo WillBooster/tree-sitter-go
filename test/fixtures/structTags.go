@@ -26,3 +26,13 @@ type Boundary struct { First string `a:"unfinished`; Second string `b:"second"`;
 type EscapedBoundary struct { First string `a:"unfinished\`; Second string `b:"second"` }
 type NewlineBoundary struct { First string `a:"unfinished\
 still`; Second string `b:"second"` }
+
+type Fallback struct {
+ Plain string `plain %d`
+ Adjacent string `literal%qtext`
+ Key string `prefix%d:"value" %s:"other" unknown%Q:"x"`
+ Incomplete string `prefix%d:"unterminated %v`
+ Quoted string `"garbage %q"`
+ SpaceFlag string `% d:"not a key"`
+ Percent string `percent%%:"value" bare%:"value"`
+}

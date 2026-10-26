@@ -2209,6 +2209,25 @@
     }
   },
   {
+    "type": "tag_name",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "format_specifier",
+          "named": true
+        },
+        {
+          "type": "raw_string_literal_content",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "type_alias",
     "named": true,
     "fields": {
@@ -3076,10 +3095,6 @@
   {
     "type": "switch",
     "named": false
-  },
-  {
-    "type": "tag_name",
-    "named": true
   },
   {
     "type": "true",
