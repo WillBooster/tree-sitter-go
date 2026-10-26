@@ -21,3 +21,8 @@ type Record struct {
 const ordinary = `json:"ordinary"`
 
 func formatExample() string { return fmt.Sprintf(`json:"%[01]d"`, 1) }
+
+type Boundary struct { First string `a:"unfinished`; Second string `b:"second"`; Third string `c:"third"` }
+type EscapedBoundary struct { First string `a:"unfinished\`; Second string `b:"second"` }
+type NewlineBoundary struct { First string `a:"unfinished\
+still`; Second string `b:"second"` }

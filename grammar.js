@@ -424,7 +424,10 @@ module.exports = grammar({
       $,
       alias($._struct_tag_quote, '"'),
       alias($._struct_tag_quote, '"'),
+      true,
     ),
+
+    _struct_tag_escape_sequence: _ => escapeSequence(/[^xuU`\n]/),
 
     _struct_tag_colon: _ => token.immediate(':'),
 
@@ -940,16 +943,7 @@ module.exports = grammar({
       /[vTtbcdoOqxXUeEfFgGspw%]/,
     ))),
 
-    escape_sequence: _ => token.immediate(seq(
-      '\\',
-      choice(
-        /[^xuU]/,
-        /\d{2,3}/,
-        /x[0-9a-fA-F]{2,}/,
-        /u[0-9a-fA-F]{4}/,
-        /U[0-9a-fA-F]{8}/,
-      ),
-    )),
+    escape_sequence: _ => escapeSequence(/[^xuU]/),
 
     int_literal: _ => token(intLiteral),
 
@@ -1039,15 +1033,28 @@ function commaSep(rule) {
   return optional(commaSep1(rule));
 }
 
-function interpretedStringLiteral($, openingQuote, closingQuote = token.immediate('"')) {
+function interpretedStringLiteral($, openingQuote, closingQuote = token.immediate('"'), insideRawTag = false) {
   return seq(
     openingQuote,
     repeat(choice(
-      alias(token.immediate(prec(1, /[^"\n\\%]+/)), $.interpreted_string_literal_content),
+      alias(token.immediate(prec(1, insideRawTag ? /[^"`\n\\%]+/ : /[^"\n\\%]+/)), $.interpreted_string_literal_content),
       alias(token.immediate('%'), $.interpreted_string_literal_content),
       $.format_specifier,
-      $.escape_sequence,
+      insideRawTag ? alias($._struct_tag_escape_sequence, $.escape_sequence) : $.escape_sequence,
     )),
     closingQuote,
   );
+}
+
+function escapeSequence(simpleEscape) {
+  return token.immediate(seq(
+    '\\',
+    choice(
+      simpleEscape,
+      /\d{2,3}/,
+      /x[0-9a-fA-F]{2,}/,
+      /u[0-9a-fA-F]{4}/,
+      /U[0-9a-fA-F]{8}/,
+    ),
+  ));
 }

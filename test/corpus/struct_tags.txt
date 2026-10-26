@@ -12,6 +12,9 @@ type Record struct {
  Empty string ``
 }
 
+type Boundary struct { First string `a:"unfinished`; Second string `b:"second"` }
+type EscapedBoundary struct { First string `a:"unfinished\`; Second string `b:"second"` }
+
 --------------------------------------------------------------------------------
 
 (source_file
@@ -75,4 +78,46 @@ type Record struct {
           (field_declaration
             (field_identifier)
             (type_identifier)
-            (raw_string_literal)))))))
+            (raw_string_literal))))))
+  (type_declaration
+    (type_spec
+      (type_identifier)
+      (struct_type
+        (field_declaration_list
+          (field_declaration
+            (field_identifier)
+            (type_identifier)
+            (raw_string_literal
+              (raw_string_literal_content)
+              (raw_string_literal_content)
+              (raw_string_literal_content)
+              (raw_string_literal_content)))
+          (field_declaration
+            (field_identifier)
+            (type_identifier)
+            (raw_string_literal
+              (struct_tag_pair
+                (tag_name)
+                (interpreted_string_literal
+                  (interpreted_string_literal_content)))))))))
+  (type_declaration
+    (type_spec
+      (type_identifier)
+      (struct_type
+        (field_declaration_list
+          (field_declaration
+            (field_identifier)
+            (type_identifier)
+            (raw_string_literal
+              (raw_string_literal_content)
+              (raw_string_literal_content)
+              (raw_string_literal_content)
+              (raw_string_literal_content)))
+          (field_declaration
+            (field_identifier)
+            (type_identifier)
+            (raw_string_literal
+              (struct_tag_pair
+                (tag_name)
+                (interpreted_string_literal
+                  (interpreted_string_literal_content))))))))))

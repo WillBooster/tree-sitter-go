@@ -1962,7 +1962,7 @@
                     "value": 1,
                     "content": {
                       "type": "PATTERN",
-                      "value": "[^\"\\n\\\\%]+"
+                      "value": "[^\"`\\n\\\\%]+"
                     }
                   }
                 },
@@ -1986,8 +1986,13 @@
                 "name": "format_specifier"
               },
               {
-                "type": "SYMBOL",
-                "name": "escape_sequence"
+                "type": "ALIAS",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "_struct_tag_escape_sequence"
+                },
+                "named": true,
+                "value": "escape_sequence"
               }
             ]
           }
@@ -2002,6 +2007,43 @@
           "value": "\""
         }
       ]
+    },
+    "_struct_tag_escape_sequence": {
+      "type": "IMMEDIATE_TOKEN",
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "STRING",
+            "value": "\\"
+          },
+          {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "PATTERN",
+                "value": "[^xuU`\\n]"
+              },
+              {
+                "type": "PATTERN",
+                "value": "\\d{2,3}"
+              },
+              {
+                "type": "PATTERN",
+                "value": "x[0-9a-fA-F]{2,}"
+              },
+              {
+                "type": "PATTERN",
+                "value": "u[0-9a-fA-F]{4}"
+              },
+              {
+                "type": "PATTERN",
+                "value": "U[0-9a-fA-F]{8}"
+              }
+            ]
+          }
+        ]
+      }
     },
     "_struct_tag_colon": {
       "type": "IMMEDIATE_TOKEN",

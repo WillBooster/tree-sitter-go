@@ -36,7 +36,14 @@ test('exposes tag key/value fields and restores them after an incomplete-value e
       ['empty', '""'],
       ['only', '"value"'],
       ['custom', '"%[01]d"'],
+      ['b', '"second"'],
+      ['c', '"third"'],
+      ['b', '"second"'],
+      ['b', '"second"'],
     ]);
+    expect(tree.rootNode.descendantsOfType('field_identifier').filter((node) => node.text === 'Second')).toHaveLength(
+      3
+    );
     const unicode = tree.rootNode.descendantsOfType('tag_name').find((node) => node.text === '界.键')!;
     expect(unicode.startIndex).toBe(Source.indexOf('界.键'));
     expect(unicode.endIndex).toBe(unicode.startIndex + '界.键'.length);
@@ -119,6 +126,10 @@ testCommand(
         'empty',
         'only',
         'custom',
+        'b',
+        'c',
+        'b',
+        'b',
       ]);
       expect(output).toContain('`json:&quot;ordinary&quot;`');
       expect(output.match(/<span class='string special'>/g)).toHaveLength(1);
