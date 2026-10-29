@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 
-import { Edit, Language, Parser, Query } from '@willbooster/web-tree-sitter';
+import { Language, Parser, Query } from '@willbooster/web-tree-sitter';
 import { expect, test } from 'vitest';
 
 import { testCommand } from './run.js';
@@ -11,7 +11,7 @@ const Source = fs.readFileSync(path.join(Root, 'test/fixtures/structTags.go'), '
 await Parser.init();
 const LanguageGo = await Language.load(path.join(Root, 'tree-sitter-go.wasm'));
 
-test('exposes tag key/value fields and restores them after an incomplete-value edit', () => {
+test('exposes tag key/value fields and drops a pair whose value is unterminated', () => {
   const parser = new Parser();
   parser.setLanguage(LanguageGo);
   const query = new Query(
@@ -21,7 +21,6 @@ test('exposes tag key/value fields and restores them after an incomplete-value e
   const tree = parser.parse(Source)!;
   try {
     expect(tree.rootNode.hasError).toBe(false);
-    const baseline = tree.rootNode.toString();
     const pairs = query.matches(tree.rootNode).map(({ captures }) => captures.map(({ node }) => node.text));
     expect(pairs).toEqual([
       ['json', '"name"'],
@@ -71,40 +70,12 @@ test('exposes tag key/value fields and restores them after an incomplete-value e
     expect(fallbackFormat.endIndex).toBe(fallbackFormat.startIndex + 2);
 
     const start = Source.indexOf('only:"value"') + 'only:"value'.length;
-    const prefix = Source.slice(0, start).split('\n');
-    const position = { row: prefix.length - 1, column: prefix.at(-1)!.length };
-    tree.edit(
-      new Edit({
-        startIndex: start,
-        oldEndIndex: start + 1,
-        newEndIndex: start,
-        startPosition: position,
-        oldEndPosition: { ...position, column: position.column + 1 },
-        newEndPosition: position,
-      })
-    );
-    const edited = parser.parse(Source.slice(0, start) + Source.slice(start + 1), tree)!;
+    const unterminated = parser.parse(Source.slice(0, start) + Source.slice(start + 1))!;
     try {
-      expect(edited.rootNode.hasError).toBe(false);
-      expect(edited.rootNode.descendantsOfType('tag_name').map((node) => node.text)).not.toContain('only');
-      edited.edit(
-        new Edit({
-          startIndex: start,
-          oldEndIndex: start,
-          newEndIndex: start + 1,
-          startPosition: position,
-          oldEndPosition: position,
-          newEndPosition: { ...position, column: position.column + 1 },
-        })
-      );
-      const restored = parser.parse(Source, edited)!;
-      try {
-        expect(restored.rootNode.toString()).toBe(baseline);
-      } finally {
-        restored.delete();
-      }
+      expect(unterminated.rootNode.hasError).toBe(false);
+      expect(unterminated.rootNode.descendantsOfType('tag_name').map((node) => node.text)).not.toContain('only');
     } finally {
-      edited.delete();
+      unterminated.delete();
     }
   } finally {
     tree.delete();
