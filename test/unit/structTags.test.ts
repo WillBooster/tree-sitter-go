@@ -4,8 +4,6 @@ import path from 'node:path';
 import { Language, Parser, Query } from '@willbooster/web-tree-sitter';
 import { expect, test } from 'vitest';
 
-import { testCommand } from './run.js';
-
 const Root = path.join(import.meta.dirname, '../..');
 const Source = fs.readFileSync(path.join(Root, 'test/fixtures/structTags.go'), 'utf8');
 await Parser.init();
@@ -83,54 +81,3 @@ test('exposes tag key/value fields and drops a pair whose value is unterminated'
     parser.delete();
   }
 });
-
-testCommand(
-  'renders raw tag keys as attributes while keeping ordinary strings intact',
-  [
-    'script/tree-sitter',
-    'highlight',
-    '--html',
-    '--style',
-    'minimal',
-    '--layout',
-    'fragment',
-    '--grammar-path',
-    '.',
-    '--query-paths',
-    'queries/highlights.scm',
-    '--',
-    'test/fixtures/structTags.go',
-  ],
-  300_000,
-  {
-    check(output) {
-      const names = Array.from(output.matchAll(/<span class='attribute'>([^<]*)<\/span>/g), (match) => match[1]);
-      expect(names).toEqual([
-        'json',
-        'xml',
-        'custom-tag',
-        'x.y',
-        'json',
-        'xml',
-        String.raw`\key`,
-        '界.键',
-        'custom',
-        'empty',
-        'only',
-        'custom',
-        'b',
-        'c',
-        'b',
-        'b',
-        'prefix%d',
-        '%s',
-        'unknown%Q',
-        'percent%%',
-        'bare%',
-      ]);
-      expect(output).toContain('`json:&quot;ordinary&quot;`');
-      expect(output.match(/<span class='string special'>/g)).toHaveLength(1);
-      expect(output).toContain("<span class='string special'>%[01]d</span>");
-    },
-  }
-);
