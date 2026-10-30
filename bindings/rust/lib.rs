@@ -34,12 +34,6 @@ pub const LANGUAGE: LanguageFn = unsafe { LanguageFn::from_raw(tree_sitter_go) }
 /// [`node-types.json`]: https://tree-sitter.github.io/tree-sitter/using-parsers/6-static-node-types
 pub const NODE_TYPES: &str = include_str!("../../src/node-types.json");
 
-/// The syntax highlighting query for this language.
-pub const HIGHLIGHTS_QUERY: &str = include_str!("../../queries/highlights.scm");
-
-/// The symbol tagging query for this language.
-pub const TAGS_QUERY: &str = include_str!("../../queries/tags.scm");
-
 #[cfg(test)]
 mod tests {
     #[test]
