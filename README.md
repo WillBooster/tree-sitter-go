@@ -5,7 +5,7 @@
 [![Test](https://github.com/WillBooster/tree-sitter-go/actions/workflows/test.yml/badge.svg)](https://github.com/WillBooster/tree-sitter-go/actions/workflows/test.yml)
 [![Test rust](https://github.com/WillBooster/tree-sitter-go/actions/workflows/test-rust.yml/badge.svg)](https://github.com/WillBooster/tree-sitter-go/actions/workflows/test-rust.yml)
 [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
-[![wbfy](https://img.shields.io/badge/wbfy-20.49.0-1e90ff.svg)](https://github.com/WillBooster/shared/tree/main/packages/wbfy)
+[![wbfy](https://img.shields.io/badge/wbfy-20.51.1-1e90ff.svg)](https://github.com/WillBooster/shared/tree/main/packages/wbfy)
 [![crates.io](https://img.shields.io/crates/v/willbooster-tree-sitter-go.svg)](https://crates.io/crates/willbooster-tree-sitter-go)
 
 Go grammar for [tree-sitter](https://github.com/tree-sitter/tree-sitter), forked from
@@ -16,6 +16,13 @@ This fork extends upstream's version 0.25.0 grammar with method type parameters 
 [WillBooster/tree-sitter](https://github.com/WillBooster/tree-sitter) generator. The parser carries that fork's own ABI
 number (`0x5742000b`), so it loads only with the WillBooster runtime, version 15.0.0 or later within 15.x
 (`willbooster-tree-sitter`, `@willbooster/web-tree-sitter`), and not with upstream's tree-sitter.
+
+## Support Scope
+
+This fork maintains only full parsing: valid input yields a correct tree, and invalid input yields `ERROR` or `MISSING`
+nodes without crashing, hanging, or taking more than linear time. Incremental parsing works as in upstream tree-sitter
+but is not tested here, and no queries (highlights, locals, injections, tags) are shipped. Node types, field names, and
+the trees that error recovery produces may change; such changes are released as new major versions.
 
 ## Usage
 
@@ -59,7 +66,7 @@ const parser = new Parser();
 parser.setLanguage(await Language.load(go));
 ```
 
-The package also ships `grammar.js`, the queries in `queries/`, and the node types in `src/node-types.json`.
+The package also ships `grammar.js` and the node types in `src/node-types.json`.
 
 In Rust, depend on the [crate](https://crates.io/crates/willbooster-tree-sitter-go) and on
 [willbooster-tree-sitter](https://crates.io/crates/willbooster-tree-sitter), the runtime this package is tested and
@@ -68,7 +75,7 @@ fuzzed with:
 ```toml
 [dependencies]
 tree-sitter = { package = "willbooster-tree-sitter", version = "15.0.0" }
-tree-sitter-go = { package = "willbooster-tree-sitter-go", version = "6" }
+tree-sitter-go = { package = "willbooster-tree-sitter-go", version = "7" }
 ```
 
 ```rust

@@ -6,9 +6,7 @@
       "camelcase": "Go",
       "scope": "source.go",
       "path": ".",
-      "file-types": ["go"],
-      "highlights": "queries/highlights.scm",
-      "tags": "queries/tags.scm"
+      "file-types": ["go"]
     }
   ],
   "metadata": {
