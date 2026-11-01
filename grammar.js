@@ -182,7 +182,7 @@ module.exports = grammar({
         $.const_spec,
         seq(
           '(',
-          repeat(seq($.const_spec, terminator)),
+          optionalTrailingSep($.const_spec, terminator),
           ')',
         ),
       ),
@@ -218,7 +218,7 @@ module.exports = grammar({
 
     var_spec_list: $ => seq(
       '(',
-      repeat(seq($.var_spec, terminator)),
+      optionalTrailingSep($.var_spec, terminator),
       ')',
     ),
 
