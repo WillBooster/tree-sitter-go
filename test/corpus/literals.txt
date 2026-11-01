@@ -330,8 +330,9 @@ const (
       (expression_list
         (raw_string_literal
           (raw_string_literal_content))))
+    (const_spec
+      (identifier))
     (ERROR
-      (identifier)
       (interpreted_string_literal_content))))
 
 ================================================================================
