@@ -57,7 +57,6 @@ examples/go/test/fixedbugs/bug003.go
 examples/go/test/fixedbugs/bug004.go
 examples/go/test/fixedbugs/bug014.go
 examples/go/test/fixedbugs/bug121.go
-examples/go/test/fixedbugs/bug123.go
 examples/go/test/fixedbugs/bug163.go
 examples/go/test/fixedbugs/bug169.go
 examples/go/test/fixedbugs/bug228.go
