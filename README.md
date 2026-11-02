@@ -14,7 +14,7 @@ to its authors and contributors. This is not an official release of that project
 
 This fork extends upstream's version 0.25.0 grammar with method type parameters and generates the parser with the
 [WillBooster/tree-sitter](https://github.com/WillBooster/tree-sitter) generator. The parser carries that fork's own ABI
-number (`0x5742000b`), so it loads only with the WillBooster runtime, version 15.0.0 or later within 15.x
+number (`0x5742000b`), so it loads only with the WillBooster runtime, version 15.0.0 or later within 15.x or 16.x
 (`willbooster-tree-sitter`, `@willbooster/web-tree-sitter`), and not with upstream's tree-sitter.
 
 ## Support Scope
@@ -27,7 +27,7 @@ the trees that error recovery produces may change; such changes are released as 
 ## Usage
 
 The npm package ships `tree-sitter-go.wasm` for
-[@willbooster/web-tree-sitter](https://www.npmjs.com/package/@willbooster/web-tree-sitter) version 15.0.0 or later within 15.x, which runs in Node.js, Bun, browsers, and Cloudflare Workers. In Node.js and Bun, load the grammar from its path:
+[@willbooster/web-tree-sitter](https://www.npmjs.com/package/@willbooster/web-tree-sitter) version 15.0.0 or later within 15.x or 16.x, which runs in Node.js, Bun, browsers, and Cloudflare Workers. In Node.js and Bun, load the grammar from its path:
 
 ```js
 import { fileURLToPath } from 'node:url';
@@ -73,7 +73,7 @@ In Rust, depend on the [crate](https://crates.io/crates/willbooster-tree-sitter-
 fuzzed with:
 
 ```sh
-cargo add willbooster-tree-sitter@15.0.0 --rename tree-sitter
+cargo add willbooster-tree-sitter@16.0.0 --rename tree-sitter
 cargo add willbooster-tree-sitter-go --rename tree-sitter-go
 ```
 
