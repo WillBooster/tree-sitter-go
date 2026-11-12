@@ -1,7 +1,11 @@
 //! This crate provides Go language support for the [tree-sitter] parsing library.
 //!
-//! The parser carries the ABI number of the WillBooster fork of tree-sitter, so it loads only with
-//! the `willbooster-tree-sitter` runtime, version 17.0.1 or later within 17.x.
+//! The parser carries the ABI number (`0x5742000c`) of the WillBooster fork of tree-sitter, which
+//! upstream `tree-sitter` runtimes reject. It requires the `willbooster-tree-sitter` runtime,
+//! version 19.1.1 or later within 19.x. Earlier 17.x, 18.x, and 19.0.x WillBooster runtimes share
+//! ABI `0x5742000c` and pass the ABI check, but dereference `TSLanguage` tables (`alias_map` and
+//! `primary_state_bitmap`) omitted since 19.1.0 in pre-19.0.0 query APIs and pre-19.1.0 Wasm
+//! language loading.
 //!
 //! Typically, you will use the [`LANGUAGE`] constant to add this language to a
 //! tree-sitter [`Parser`], and then use the parser to parse some code:
@@ -17,7 +21,7 @@
 //! assert!(!tree.root_node().has_error());
 //! ```
 //!
-//! [`Parser`]: https://docs.rs/willbooster-tree-sitter/17.0.1/tree_sitter/struct.Parser.html
+//! [`Parser`]: https://docs.rs/willbooster-tree-sitter/19.1.1/tree_sitter/struct.Parser.html
 //! [tree-sitter]: https://tree-sitter.github.io/
 
 use tree_sitter_language::LanguageFn;

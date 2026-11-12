@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 
-import { Language, Parser, Query } from '@willbooster/web-tree-sitter';
+import { Language, Parser } from '@willbooster/web-tree-sitter';
 import { expect, test } from 'vitest';
 
 const Root = path.join(import.meta.dirname, '../..');
@@ -12,14 +12,15 @@ const LanguageGo = await Language.load(path.join(Root, 'tree-sitter-go.wasm'));
 test('exposes tag key/value fields and drops a pair whose value is unterminated', () => {
   const parser = new Parser();
   parser.setLanguage(LanguageGo);
-  const query = new Query(
-    LanguageGo,
-    '(struct_tag_pair key: (tag_name) @key value: (interpreted_string_literal) @value)'
-  );
   const tree = parser.parse(Source)!;
   try {
     expect(tree.rootNode.hasError).toBe(false);
-    const pairs = query.matches(tree.rootNode).map(({ captures }) => captures.map(({ node }) => node.text));
+    const pairs = tree.rootNode.descendantsOfType('struct_tag_pair').map((pair) => {
+      const key = pair.childForFieldName('key');
+      const value = pair.childForFieldName('value');
+      expect([key?.type, value?.type]).toEqual(['tag_name', 'interpreted_string_literal']);
+      return [key!.text, value!.text];
+    });
     expect(pairs).toEqual([
       ['json', '"name"'],
       ['xml', '"name,omitempty"'],
@@ -77,7 +78,6 @@ test('exposes tag key/value fields and drops a pair whose value is unterminated'
     }
   } finally {
     tree.delete();
-    query.delete();
     parser.delete();
   }
 });
