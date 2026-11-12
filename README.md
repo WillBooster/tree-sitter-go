@@ -13,9 +13,12 @@ Go grammar for [tree-sitter](https://github.com/tree-sitter/tree-sitter), forked
 to its authors and contributors. This is not an official release of that project.
 
 This fork extends upstream's version 0.25.0 grammar with method type parameters and generates the parser with the
-[WillBooster/tree-sitter](https://github.com/WillBooster/tree-sitter) generator. The parser carries that fork's own ABI
-number (`0x5742000c`), so it loads only with the WillBooster runtime, version 17.0.1 or later within 17.x
-(`willbooster-tree-sitter`, `@willbooster/web-tree-sitter`), and not with upstream's tree-sitter.
+[WillBooster/tree-sitter](https://github.com/WillBooster/tree-sitter) generator. The parser carries that fork's ABI
+number (`0x5742000c`), which upstream tree-sitter runtimes reject. It requires the WillBooster runtime
+(`willbooster-tree-sitter` or `@willbooster/web-tree-sitter`) version 19.1.1 or later within 19.x. Earlier 17.x, 18.x,
+and 19.0.x WillBooster runtimes share ABI `0x5742000c` and pass the ABI check, but dereference `TSLanguage` tables
+(`alias_map` and `primary_state_bitmap`) omitted since 19.1.0 in pre-19.0.0 query APIs and pre-19.1.0 Wasm language
+loading.
 
 ## Support Scope
 
@@ -27,7 +30,7 @@ the trees that error recovery produces may change; such changes are released as 
 ## Usage
 
 The npm package ships `tree-sitter-go.wasm` for
-[@willbooster/web-tree-sitter](https://www.npmjs.com/package/@willbooster/web-tree-sitter) version 17.0.1 or later within 17.x, which runs in Node.js, Bun, browsers, and Cloudflare Workers. In Node.js and Bun, load the grammar from its path:
+[@willbooster/web-tree-sitter](https://www.npmjs.com/package/@willbooster/web-tree-sitter) version 19.1.1 or later within 19.x, which runs in Node.js, Bun, browsers, and Cloudflare Workers. In Node.js and Bun, load the grammar from its path:
 
 ```js
 import { fileURLToPath } from 'node:url';
@@ -73,7 +76,7 @@ In Rust, depend on the [crate](https://crates.io/crates/willbooster-tree-sitter-
 fuzzed with:
 
 ```sh
-cargo add willbooster-tree-sitter@17.0.1 --rename tree-sitter
+cargo add willbooster-tree-sitter@19.1.1 --rename tree-sitter
 cargo add willbooster-tree-sitter-go --rename tree-sitter-go
 ```
 

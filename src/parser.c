@@ -2400,38 +2400,6 @@ static const TSSymbol ts_alias_sequences[127] = {
   [118] = alias_sym_tag_name,
 };
 
-static const uint16_t ts_non_terminal_alias_map[] = {
-  aux_sym__struct_tag_key, 2,
-    aux_sym__struct_tag_key,
-    alias_sym_tag_name,
-  sym__struct_tag_colon, 2,
-    anon_sym_COLON,
-    aux_sym__raw_struct_tag_token1,
-  sym__struct_tag_quote, 2,
-    anon_sym_DQUOTE,
-    aux_sym__raw_struct_tag_token1,
-  sym_type_elem, 2,
-    sym_type_elem,
-    alias_sym_type_constraint,
-  0,
-};
-
-static const uint8_t ts_primary_state_bitmap[] = {
-  255, 191, 216, 255, 247, 63, 241, 126, 112, 36, 185, 33, 254, 10, 190, 17, 
-  110, 198, 159, 254, 223, 231, 179, 212, 247, 131, 255, 191, 212, 204, 223, 249, 
-  23, 238, 238, 103, 32, 193, 122, 68, 228, 33, 185, 0, 200, 52, 235, 63, 
-  49, 255, 247, 247, 232, 215, 63, 255, 159, 245, 247, 135, 254, 125, 223, 63, 
-  255, 227, 247, 227, 239, 179, 255, 1, 193, 122, 120, 130, 169, 78, 112, 19, 
-  43, 128, 200, 198, 31, 157, 59, 13, 131, 200, 131, 227, 191, 173, 141, 79, 
-  76, 0, 21, 26, 120, 1, 56, 142, 112, 67, 90, 240, 249, 25, 203, 240, 
-  41, 145, 125, 24, 64, 1, 0, 0, 0, 144, 16, 0, 0, 16, 0, 0, 
-  0, 32, 84, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
-  0, 0, 0, 0, 0, 4, 0, 0, 8, 4, 160, 2, 0, 0, 0, 0, 
-  0, 128, 192, 200, 33, 8, 30, 254, 14, 160, 59, 28, 0, 20, 128, 115, 
-  2, 10, 0, 70, 2, 0, 2, 0, 1, 0, 72, 133, 64, 1, 40, 17, 
-  134, 0, 132, 0, 
-};
-
 static const TSSymbol ts_supertype_symbols[SUPERTYPE_COUNT] = {
   sym__expression,
   sym__simple_statement,
@@ -18408,7 +18376,6 @@ TS_PUBLIC const TSLanguage *tree_sitter_go(void) {
     .supertype_symbols = ts_supertype_symbols,
     .symbol_metadata = ts_symbol_metadata,
     .public_symbol_map = ts_symbol_map,
-    .alias_map = ts_non_terminal_alias_map,
     .alias_sequences = ts_alias_sequences,
     .alias_sequence_offsets = ts_alias_sequence_offsets,
     .alias_sequence_count = 127,
@@ -18419,7 +18386,6 @@ TS_PUBLIC const TSLanguage *tree_sitter_go(void) {
     .keyword_lex_fn = ts_lex_keywords,
     .keyword_lookup_fn = ts_keyword_lookup,
     .keyword_capture_token = sym_identifier,
-    .primary_state_bitmap = ts_primary_state_bitmap,
     .name = "go",
     .reserved_words = ts_reserved_words,
     .reserved_word_slices = ts_reserved_word_slices,
