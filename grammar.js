@@ -496,12 +496,13 @@ module.exports = grammar({
       '}',
     ),
 
-    statement_list: $ => choice(
-      repeat1($._terminated_statement),
-      seq(
-        repeat($._terminated_statement),
-        choice($._nonempty_statement, alias($.empty_labeled_statement, $.labeled_statement)),
-      ),
+    statement_list: $ => choice($._terminated_statement_list, $._unterminated_statement_list),
+
+    _terminated_statement_list: $ => repeat1($._terminated_statement),
+
+    _unterminated_statement_list: $ => seq(
+      optional($._terminated_statement_list),
+      choice($._nonempty_statement, alias($.empty_labeled_statement, $.labeled_statement)),
     ),
 
     _terminated_statement: $ => choice(
@@ -663,6 +664,7 @@ module.exports = grammar({
       field('value', optional($._expression)),
       '{',
       repeat(choice($.expression_case, $.default_case)),
+      optional(choice(alias($._final_expression_case, $.expression_case), alias($._final_default_case, $.default_case))),
       '}',
     ),
 
@@ -670,13 +672,26 @@ module.exports = grammar({
       'case',
       field('value', $.expression_list),
       ':',
-      optional($.statement_list),
+      optional(alias($._terminated_statement_list, $.statement_list)),
+    ),
+
+    _final_expression_case: $ => seq(
+      'case',
+      field('value', $.expression_list),
+      ':',
+      alias($._unterminated_statement_list, $.statement_list),
     ),
 
     default_case: $ => seq(
       'default',
       ':',
-      optional($.statement_list),
+      optional(alias($._terminated_statement_list, $.statement_list)),
+    ),
+
+    _final_default_case: $ => seq(
+      'default',
+      ':',
+      alias($._unterminated_statement_list, $.statement_list),
     ),
 
     type_switch_statement: $ => seq(
@@ -684,6 +699,7 @@ module.exports = grammar({
       $._type_switch_header,
       '{',
       repeat(choice($.type_case, $.default_case)),
+      optional(choice(alias($._final_type_case, $.type_case), alias($._final_default_case, $.default_case))),
       '}',
     ),
 
@@ -704,13 +720,21 @@ module.exports = grammar({
       'case',
       field('type', commaSep1($._type)),
       ':',
-      optional($.statement_list),
+      optional(alias($._terminated_statement_list, $.statement_list)),
+    ),
+
+    _final_type_case: $ => seq(
+      'case',
+      field('type', commaSep1($._type)),
+      ':',
+      alias($._unterminated_statement_list, $.statement_list),
     ),
 
     select_statement: $ => seq(
       'select',
       '{',
       repeat(choice($.communication_case, $.default_case)),
+      optional(choice(alias($._final_communication_case, $.communication_case), alias($._final_default_case, $.default_case))),
       '}',
     ),
 
@@ -718,7 +742,14 @@ module.exports = grammar({
       'case',
       field('communication', choice($.send_statement, $.receive_statement)),
       ':',
-      optional($.statement_list),
+      optional(alias($._terminated_statement_list, $.statement_list)),
+    ),
+
+    _final_communication_case: $ => seq(
+      'case',
+      field('communication', choice($.send_statement, $.receive_statement)),
+      ':',
+      alias($._unterminated_statement_list, $.statement_list),
     ),
 
     _expression: $ => choice(
