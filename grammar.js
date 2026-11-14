@@ -497,18 +497,22 @@ module.exports = grammar({
     ),
 
     statement_list: $ => choice(
+      repeat1($._terminated_statement),
       seq(
-        $._statement,
-        repeat(seq(terminator, $._statement)),
-        optional(seq(
-          terminator,
-          optional(alias($.empty_labeled_statement, $.labeled_statement)),
-        )),
+        repeat($._terminated_statement),
+        choice($._nonempty_statement, alias($.empty_labeled_statement, $.labeled_statement)),
       ),
-      alias($.empty_labeled_statement, $.labeled_statement),
     ),
 
-    _statement: $ => choice(
+    _terminated_statement: $ => choice(
+      seq($._nonempty_statement, terminator),
+      $.empty_statement,
+      alias($.terminated_labeled_statement, $.labeled_statement),
+    ),
+
+    _statement: $ => choice($._nonempty_statement, $.empty_statement),
+
+    _nonempty_statement: $ => choice(
       $._declaration,
       $._simple_statement,
       $.return_statement,
@@ -525,7 +529,6 @@ module.exports = grammar({
       $.continue_statement,
       $.goto_statement,
       $.block,
-      $.empty_statement,
     ),
 
     empty_statement: _ => ';',
@@ -582,12 +585,19 @@ module.exports = grammar({
     labeled_statement: $ => seq(
       field('label', alias($.identifier, $.label_name)),
       ':',
-      $._statement,
+      $._nonempty_statement,
+    ),
+
+    terminated_labeled_statement: $ => seq(
+      field('label', alias($.identifier, $.label_name)),
+      ':',
+      choice($.empty_statement, alias($.terminated_labeled_statement, $.labeled_statement)),
     ),
 
     empty_labeled_statement: $ => seq(
       field('label', alias($.identifier, $.label_name)),
       ':',
+      optional(alias($.empty_labeled_statement, $.labeled_statement)),
     ),
 
     // This is a hack to prevent `fallthrough_statement` from being parsed as

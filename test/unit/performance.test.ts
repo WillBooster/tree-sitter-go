@@ -30,6 +30,20 @@ test('parses ambiguous raw tag contents in linear time', { timeout: 60_000 }, ()
   expectLinearScaling(rawTagSource(2000), rawTagSource(20_000), false);
 });
 
+test('parses label chains and empty statement lists in linear time', { timeout: 60_000 }, () => {
+  expectLinearScaling(labelChainSource(2000), labelChainSource(20_000), false);
+  expectLinearScaling(
+    'package p;func f(){' + 'f() '.repeat(2000) + '}',
+    'package p;func f(){' + 'f() '.repeat(20_000) + '}',
+    true
+  );
+});
+
+function labelChainSource(count: number): string {
+  const labels = Array.from({ length: count }, (_, index) => `L${index}:`).join('');
+  return 'package p;func f(){' + labels + ';'.repeat(count) + '}';
+}
+
 function rawTagSource(count: number): string {
   return 'package tags\ntype Record struct { F string `' + 'x:"a '.repeat(count) + '` }\n';
 }

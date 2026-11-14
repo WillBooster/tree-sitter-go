@@ -1,0 +1,168 @@
+================================================================================
+Empty statements before and between ordinary statements
+================================================================================
+
+package main
+func main() {
+  ; println(1);; println(2);;;
+}
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (package_clause
+    (package_identifier))
+  (function_declaration
+    (identifier)
+    (parameter_list)
+    (block
+      (statement_list
+        (empty_statement)
+        (expression_statement
+          (call_expression
+            (identifier)
+            (argument_list
+              (int_literal))))
+        (empty_statement)
+        (expression_statement
+          (call_expression
+            (identifier)
+            (argument_list
+              (int_literal))))
+        (empty_statement)
+        (empty_statement)))))
+
+================================================================================
+Stacked labels on a terminated empty statement
+================================================================================
+
+package main
+func main() {
+  if false { goto Outer; goto Inner }
+Outer: Inner: ; println(1)
+}
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (package_clause
+    (package_identifier))
+  (function_declaration
+    (identifier)
+    (parameter_list)
+    (block
+      (statement_list
+        (if_statement
+          (false)
+          (block
+            (statement_list
+              (goto_statement
+                (label_name))
+              (goto_statement
+                (label_name)))))
+        (labeled_statement
+          (label_name)
+          (labeled_statement
+            (label_name)
+            (empty_statement)))
+        (expression_statement
+          (call_expression
+            (identifier)
+            (argument_list
+              (int_literal))))))))
+
+================================================================================
+Stacked trailing labels before a closing brace
+================================================================================
+
+package main
+func main() {
+  if false { goto Outer; goto Inner; goto Last }
+Outer: Inner: Last:
+}
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (package_clause
+    (package_identifier))
+  (function_declaration
+    (identifier)
+    (parameter_list)
+    (block
+      (statement_list
+        (if_statement
+          (false)
+          (block
+            (statement_list
+              (goto_statement
+                (label_name))
+              (goto_statement
+                (label_name))
+              (goto_statement
+                (label_name)))))
+        (labeled_statement
+          (label_name)
+          (labeled_statement
+            (label_name)
+            (labeled_statement
+              (label_name))))))))
+
+================================================================================
+Stacked empty labels at the end of switch and select cases
+================================================================================
+
+package main
+func main() {
+  switch {
+  default:
+    if false { goto SwitchOuter; goto SwitchInner }
+  SwitchOuter: SwitchInner:
+  }
+  select {
+  default:
+    if false { goto SelectOuter; goto SelectInner }
+  SelectOuter: SelectInner:
+  }
+}
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (package_clause
+    (package_identifier))
+  (function_declaration
+    (identifier)
+    (parameter_list)
+    (block
+      (statement_list
+        (expression_switch_statement
+          (default_case
+            (statement_list
+              (if_statement
+                (false)
+                (block
+                  (statement_list
+                    (goto_statement
+                      (label_name))
+                    (goto_statement
+                      (label_name)))))
+              (labeled_statement
+                (label_name)
+                (labeled_statement
+                  (label_name))))))
+        (select_statement
+          (default_case
+            (statement_list
+              (if_statement
+                (false)
+                (block
+                  (statement_list
+                    (goto_statement
+                      (label_name))
+                    (goto_statement
+                      (label_name)))))
+              (labeled_statement
+                (label_name)
+                (labeled_statement
+                  (label_name))))))))))
