@@ -26,7 +26,8 @@ const assignmentOperators = multiplicativeOperators.concat(additiveOperators).ma
 
 
 const newline = /\n/;
-const terminator = choice(newline, ';', '\0');
+const newlineComment = /\/\*([^*\n]|\*+[^*/\n])*\**\n([^*]|\*+[^*/])*\*+\//;
+const terminator = $ => choice(newline, ';', '\0', alias(token(newlineComment), $.comment));
 
 const hexDigit = /[0-9a-fA-F]/;
 const octalDigit = /[0-7]/;
@@ -123,8 +124,8 @@ module.exports = grammar({
       repeat(choice(
         // Unlike a Go compiler, we accept statements at top-level to enable
         // parsing of partial code snippets in documentation (see #63).
-        seq($._statement, terminator),
-        seq($._top_level_declaration, terminator),
+        seq($._statement, terminator($)),
+        seq($._top_level_declaration, terminator($)),
       )),
       optional($._top_level_declaration),
     ),
@@ -164,8 +165,8 @@ module.exports = grammar({
       '(',
       optional(seq(
         $.import_spec,
-        repeat(seq(terminator, $.import_spec)),
-        optional(terminator),
+        repeat(seq(terminator($), $.import_spec)),
+        optional(terminator($)),
       )),
       ')',
     ),
@@ -182,7 +183,7 @@ module.exports = grammar({
         $.const_spec,
         seq(
           '(',
-          optionalTrailingSep($.const_spec, terminator),
+          optionalTrailingSep($.const_spec, terminator($)),
           ')',
         ),
       ),
@@ -218,7 +219,7 @@ module.exports = grammar({
 
     var_spec_list: $ => seq(
       '(',
-      optionalTrailingSep($.var_spec, terminator),
+      optionalTrailingSep($.var_spec, terminator($)),
       ')',
     ),
 
@@ -287,7 +288,7 @@ module.exports = grammar({
         $.type_alias,
         seq(
           '(',
-          optionalTrailingSep(choice($.type_spec, $.type_alias), terminator),
+          optionalTrailingSep(choice($.type_spec, $.type_alias), terminator($)),
           ')',
         ),
       ),
@@ -373,8 +374,8 @@ module.exports = grammar({
       '{',
       optional(seq(
         $.field_declaration,
-        repeat(seq(terminator, $.field_declaration)),
-        optional(terminator),
+        repeat(seq(terminator($), $.field_declaration)),
+        optional(terminator($)),
       )),
       '}',
     ),
@@ -451,8 +452,8 @@ module.exports = grammar({
       '{',
       optional(seq(
         $._interface_elem,
-        repeat(seq(terminator, $._interface_elem)),
-        optional(terminator),
+        repeat(seq(terminator($), $._interface_elem)),
+        optional(terminator($)),
       )),
       '}',
     ),
@@ -496,19 +497,24 @@ module.exports = grammar({
       '}',
     ),
 
-    statement_list: $ => choice(
-      seq(
-        $._statement,
-        repeat(seq(terminator, $._statement)),
-        optional(seq(
-          terminator,
-          optional(alias($.empty_labeled_statement, $.labeled_statement)),
-        )),
-      ),
-      alias($.empty_labeled_statement, $.labeled_statement),
+    statement_list: $ => choice($._terminated_statement_list, $._unterminated_statement_list),
+
+    _terminated_statement_list: $ => repeat1($._terminated_statement),
+
+    _unterminated_statement_list: $ => seq(
+      optional($._terminated_statement_list),
+      choice($._nonempty_statement, alias($.empty_labeled_statement, $.labeled_statement)),
     ),
 
-    _statement: $ => choice(
+    _terminated_statement: $ => choice(
+      seq($._nonempty_statement, terminator($)),
+      $.empty_statement,
+      alias($.terminated_labeled_statement, $.labeled_statement),
+    ),
+
+    _statement: $ => choice($._nonempty_statement, $.empty_statement),
+
+    _nonempty_statement: $ => choice(
       $._declaration,
       $._simple_statement,
       $.return_statement,
@@ -525,7 +531,6 @@ module.exports = grammar({
       $.continue_statement,
       $.goto_statement,
       $.block,
-      $.empty_statement,
     ),
 
     empty_statement: _ => ';',
@@ -582,12 +587,19 @@ module.exports = grammar({
     labeled_statement: $ => seq(
       field('label', alias($.identifier, $.label_name)),
       ':',
-      $._statement,
+      $._nonempty_statement,
+    ),
+
+    terminated_labeled_statement: $ => seq(
+      field('label', alias($.identifier, $.label_name)),
+      ':',
+      choice($.empty_statement, alias($.terminated_labeled_statement, $.labeled_statement)),
     ),
 
     empty_labeled_statement: $ => seq(
       field('label', alias($.identifier, $.label_name)),
       ':',
+      optional(alias($.empty_labeled_statement, $.labeled_statement)),
     ),
 
     // This is a hack to prevent `fallthrough_statement` from being parsed as
@@ -652,28 +664,23 @@ module.exports = grammar({
       )),
       field('value', optional($._expression)),
       '{',
-      repeat(choice($.expression_case, $.default_case)),
+      ...caseClauses($, $.expression_case, $._final_expression_case),
       '}',
     ),
 
-    expression_case: $ => seq(
-      'case',
-      field('value', $.expression_list),
-      ':',
-      optional($.statement_list),
-    ),
+    expression_case: $ => expressionCase($),
 
-    default_case: $ => seq(
-      'default',
-      ':',
-      optional($.statement_list),
-    ),
+    _final_expression_case: $ => expressionCase($, true),
+
+    default_case: $ => defaultCase($),
+
+    _final_default_case: $ => defaultCase($, true),
 
     type_switch_statement: $ => seq(
       'switch',
       $._type_switch_header,
       '{',
-      repeat(choice($.type_case, $.default_case)),
+      ...caseClauses($, $.type_case, $._final_type_case),
       '}',
     ),
 
@@ -690,26 +697,20 @@ module.exports = grammar({
       ')',
     ),
 
-    type_case: $ => seq(
-      'case',
-      field('type', commaSep1($._type)),
-      ':',
-      optional($.statement_list),
-    ),
+    type_case: $ => typeCase($),
+
+    _final_type_case: $ => typeCase($, true),
 
     select_statement: $ => seq(
       'select',
       '{',
-      repeat(choice($.communication_case, $.default_case)),
+      ...caseClauses($, $.communication_case, $._final_communication_case),
       '}',
     ),
 
-    communication_case: $ => seq(
-      'case',
-      field('communication', choice($.send_statement, $.receive_statement)),
-      ':',
-      optional($.statement_list),
-    ),
+    communication_case: $ => communicationCase($),
+
+    _final_communication_case: $ => communicationCase($, true),
 
     _expression: $ => choice(
       $.unary_expression,
@@ -991,6 +992,37 @@ module.exports = grammar({
     )),
   },
 });
+
+function caseClauses($, clause, finalClause) {
+  return [
+    repeat(choice(clause, $.default_case)),
+    optional(choice(alias(finalClause, clause), alias($._final_default_case, $.default_case))),
+  ];
+}
+
+function expressionCase($, final = false) {
+  return caseClause($, ['case', field('value', $.expression_list), ':'], final);
+}
+
+function defaultCase($, final = false) {
+  return caseClause($, ['default', ':'], final);
+}
+
+function typeCase($, final = false) {
+  return caseClause($, ['case', field('type', commaSep1($._type)), ':'], final);
+}
+
+function communicationCase($, final = false) {
+  return caseClause($, ['case', field('communication', choice($.send_statement, $.receive_statement)), ':'], final);
+}
+
+function caseClause($, head, final) {
+  const body = final
+    ? alias($._unterminated_statement_list, $.statement_list)
+    : optional(alias($._terminated_statement_list, $.statement_list));
+  return seq(...head, body);
+}
+
 
 /**
  * Creates a rule to match one or more occurrences of `rule` separated by `sep`

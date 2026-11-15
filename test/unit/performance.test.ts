@@ -30,6 +30,30 @@ test('parses ambiguous raw tag contents in linear time', { timeout: 60_000 }, ()
   expectLinearScaling(rawTagSource(2000), rawTagSource(20_000), false);
 });
 
+test('parses label chains and empty statement lists in linear time', { timeout: 60_000 }, () => {
+  expectLinearScaling(labelChainSource(2000), labelChainSource(20_000), false);
+  expectLinearScaling(
+    'package p;func f(){' + 'f() '.repeat(2000) + '}',
+    'package p;func f(){' + 'f() '.repeat(20_000) + '}',
+    true
+  );
+});
+
+test('parses newline comment terminators in linear time', { timeout: 60_000 }, () => {
+  for (const separator of ['\n', ' ']) {
+    expectLinearScaling(
+      'package p;func f(){switch {case true:f()/*' + '*x'.repeat(2000) + separator + '*/default:}}',
+      'package p;func f(){switch {case true:f()/*' + '*x'.repeat(20_000) + separator + '*/default:}}',
+      separator !== '\n'
+    );
+  }
+});
+
+function labelChainSource(count: number): string {
+  const labels = Array.from({ length: count }, (_, index) => `L${index}:`).join('');
+  return 'package p;func f(){' + labels + ';'.repeat(count) + '}';
+}
+
 function rawTagSource(count: number): string {
   return 'package tags\ntype Record struct { F string `' + 'x:"a '.repeat(count) + '` }\n';
 }
@@ -51,11 +75,17 @@ function expectLinearScaling(small: string, large: string, expectError: boolean)
 
 function parseCpuTime(source: string, expectError: boolean): number {
   const start = process.threadCpuUsage();
-  const tree = parser.parse(source);
-  const { system, user } = process.threadCpuUsage(start);
-  if (!tree) throw new Error('The parser returned no tree');
-  const { hasError } = tree.rootNode;
-  tree.delete();
-  expect(hasError).toBe(expectError);
-  return system + user;
+  let elapsed = 0;
+  let parses = 0;
+  do {
+    const tree = parser.parse(source);
+    if (!tree) throw new Error('The parser returned no tree');
+    const { hasError } = tree.rootNode;
+    tree.delete();
+    expect(hasError).toBe(expectError);
+    parses++;
+    const { system, user } = process.threadCpuUsage(start);
+    elapsed = system + user;
+  } while (elapsed < 10_000);
+  return elapsed / parses;
 }
