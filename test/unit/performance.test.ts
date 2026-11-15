@@ -39,6 +39,16 @@ test('parses label chains and empty statement lists in linear time', { timeout: 
   );
 });
 
+test('parses newline comment terminators in linear time', { timeout: 60_000 }, () => {
+  for (const separator of ['\n', ' ']) {
+    expectLinearScaling(
+      'package p;func f(){switch {case true:f()/*' + '*x'.repeat(2000) + separator + '*/default:}}',
+      'package p;func f(){switch {case true:f()/*' + '*x'.repeat(20_000) + separator + '*/default:}}',
+      separator !== '\n'
+    );
+  }
+});
+
 function labelChainSource(count: number): string {
   const labels = Array.from({ length: count }, (_, index) => `L${index}:`).join('');
   return 'package p;func f(){' + labels + ';'.repeat(count) + '}';

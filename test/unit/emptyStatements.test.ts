@@ -29,6 +29,25 @@ test('ordinary statements require a terminator before the next case', () => {
   }
 });
 
+test('comments preserve statement termination before the next case', () => {
+  for (const [prefix, next] of clauses) {
+    for (const comment of ['/*\n*/', '/* text *\n more **/', '/**/ /*\n*/ /**/', '// text\n']) {
+      expectParse(`${prefix}println(1) ${comment}${next}`, false);
+    }
+    for (const comment of ['/**/', '/* text **/', '/*\r*/']) {
+      expectParse(`${prefix}println(1) ${comment}${next}`, true);
+    }
+    expectParse(`${prefix}${labels}/*\n*/${next}`, true);
+  }
+});
+
+test('newline comments separate statements and declaration members', () => {
+  expectParse('println(1)/*\n*/println(2)', false);
+  expectParse('var (a=1/*\n*/b=2);_ = a;_ = b', false);
+  expectParse('type S struct {a int/*\n*/b int};_ = S{}', false);
+  expectParse('type I interface {A()/*\n*/B()};var _ I', false);
+});
+
 test('empty label tails can end the final case before a closing brace', () => {
   for (const [prefix] of clauses) expectParse(`${prefix}${labels}}`, false);
 });

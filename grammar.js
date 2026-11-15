@@ -26,7 +26,8 @@ const assignmentOperators = multiplicativeOperators.concat(additiveOperators).ma
 
 
 const newline = /\n/;
-const terminator = choice(newline, ';', '\0');
+const newlineComment = /\/\*([^*\n]|\*+[^*/\n])*\**\n([^*]|\*+[^*/])*\*+\//;
+const terminator = $ => choice(newline, ';', '\0', alias(token(prec(1, newlineComment)), $.comment));
 
 const hexDigit = /[0-9a-fA-F]/;
 const octalDigit = /[0-7]/;
@@ -123,8 +124,8 @@ module.exports = grammar({
       repeat(choice(
         // Unlike a Go compiler, we accept statements at top-level to enable
         // parsing of partial code snippets in documentation (see #63).
-        seq($._statement, terminator),
-        seq($._top_level_declaration, terminator),
+        seq($._statement, terminator($)),
+        seq($._top_level_declaration, terminator($)),
       )),
       optional($._top_level_declaration),
     ),
@@ -164,8 +165,8 @@ module.exports = grammar({
       '(',
       optional(seq(
         $.import_spec,
-        repeat(seq(terminator, $.import_spec)),
-        optional(terminator),
+        repeat(seq(terminator($), $.import_spec)),
+        optional(terminator($)),
       )),
       ')',
     ),
@@ -182,7 +183,7 @@ module.exports = grammar({
         $.const_spec,
         seq(
           '(',
-          optionalTrailingSep($.const_spec, terminator),
+          optionalTrailingSep($.const_spec, terminator($)),
           ')',
         ),
       ),
@@ -218,7 +219,7 @@ module.exports = grammar({
 
     var_spec_list: $ => seq(
       '(',
-      optionalTrailingSep($.var_spec, terminator),
+      optionalTrailingSep($.var_spec, terminator($)),
       ')',
     ),
 
@@ -287,7 +288,7 @@ module.exports = grammar({
         $.type_alias,
         seq(
           '(',
-          optionalTrailingSep(choice($.type_spec, $.type_alias), terminator),
+          optionalTrailingSep(choice($.type_spec, $.type_alias), terminator($)),
           ')',
         ),
       ),
@@ -373,8 +374,8 @@ module.exports = grammar({
       '{',
       optional(seq(
         $.field_declaration,
-        repeat(seq(terminator, $.field_declaration)),
-        optional(terminator),
+        repeat(seq(terminator($), $.field_declaration)),
+        optional(terminator($)),
       )),
       '}',
     ),
@@ -451,8 +452,8 @@ module.exports = grammar({
       '{',
       optional(seq(
         $._interface_elem,
-        repeat(seq(terminator, $._interface_elem)),
-        optional(terminator),
+        repeat(seq(terminator($), $._interface_elem)),
+        optional(terminator($)),
       )),
       '}',
     ),
@@ -506,7 +507,7 @@ module.exports = grammar({
     ),
 
     _terminated_statement: $ => choice(
-      seq($._nonempty_statement, terminator),
+      seq($._nonempty_statement, terminator($)),
       $.empty_statement,
       alias($.terminated_labeled_statement, $.labeled_statement),
     ),

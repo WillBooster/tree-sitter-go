@@ -32,6 +32,22 @@
                       {
                         "type": "STRING",
                         "value": "\u0000"
+                      },
+                      {
+                        "type": "ALIAS",
+                        "content": {
+                          "type": "TOKEN",
+                          "content": {
+                            "type": "PREC",
+                            "value": 1,
+                            "content": {
+                              "type": "PATTERN",
+                              "value": "\\/\\*([^*\\n]|\\*+[^*/\\n])*\\**\\n([^*]|\\*+[^*/])*\\*+\\/"
+                            }
+                          }
+                        },
+                        "named": true,
+                        "value": "comment"
                       }
                     ]
                   }
@@ -58,6 +74,22 @@
                       {
                         "type": "STRING",
                         "value": "\u0000"
+                      },
+                      {
+                        "type": "ALIAS",
+                        "content": {
+                          "type": "TOKEN",
+                          "content": {
+                            "type": "PREC",
+                            "value": 1,
+                            "content": {
+                              "type": "PATTERN",
+                              "value": "\\/\\*([^*\\n]|\\*+[^*/\\n])*\\**\\n([^*]|\\*+[^*/])*\\*+\\/"
+                            }
+                          }
+                        },
+                        "named": true,
+                        "value": "comment"
                       }
                     ]
                   }
@@ -222,6 +254,22 @@
                           {
                             "type": "STRING",
                             "value": "\u0000"
+                          },
+                          {
+                            "type": "ALIAS",
+                            "content": {
+                              "type": "TOKEN",
+                              "content": {
+                                "type": "PREC",
+                                "value": 1,
+                                "content": {
+                                  "type": "PATTERN",
+                                  "value": "\\/\\*([^*\\n]|\\*+[^*/\\n])*\\**\\n([^*]|\\*+[^*/])*\\*+\\/"
+                                }
+                              }
+                            },
+                            "named": true,
+                            "value": "comment"
                           }
                         ]
                       },
@@ -249,6 +297,22 @@
                         {
                           "type": "STRING",
                           "value": "\u0000"
+                        },
+                        {
+                          "type": "ALIAS",
+                          "content": {
+                            "type": "TOKEN",
+                            "content": {
+                              "type": "PREC",
+                              "value": 1,
+                              "content": {
+                                "type": "PATTERN",
+                                "value": "\\/\\*([^*\\n]|\\*+[^*/\\n])*\\**\\n([^*]|\\*+[^*/])*\\*+\\/"
+                              }
+                            }
+                          },
+                          "named": true,
+                          "value": "comment"
                         }
                       ]
                     },
@@ -337,6 +401,22 @@
                                   {
                                     "type": "STRING",
                                     "value": "\u0000"
+                                  },
+                                  {
+                                    "type": "ALIAS",
+                                    "content": {
+                                      "type": "TOKEN",
+                                      "content": {
+                                        "type": "PREC",
+                                        "value": 1,
+                                        "content": {
+                                          "type": "PATTERN",
+                                          "value": "\\/\\*([^*\\n]|\\*+[^*/\\n])*\\**\\n([^*]|\\*+[^*/])*\\*+\\/"
+                                        }
+                                      }
+                                    },
+                                    "named": true,
+                                    "value": "comment"
                                   }
                                 ]
                               },
@@ -364,6 +444,22 @@
                                 {
                                   "type": "STRING",
                                   "value": "\u0000"
+                                },
+                                {
+                                  "type": "ALIAS",
+                                  "content": {
+                                    "type": "TOKEN",
+                                    "content": {
+                                      "type": "PREC",
+                                      "value": 1,
+                                      "content": {
+                                        "type": "PATTERN",
+                                        "value": "\\/\\*([^*\\n]|\\*+[^*/\\n])*\\**\\n([^*]|\\*+[^*/])*\\*+\\/"
+                                      }
+                                    }
+                                  },
+                                  "named": true,
+                                  "value": "comment"
                                 }
                               ]
                             },
@@ -624,6 +720,22 @@
                           {
                             "type": "STRING",
                             "value": "\u0000"
+                          },
+                          {
+                            "type": "ALIAS",
+                            "content": {
+                              "type": "TOKEN",
+                              "content": {
+                                "type": "PREC",
+                                "value": 1,
+                                "content": {
+                                  "type": "PATTERN",
+                                  "value": "\\/\\*([^*\\n]|\\*+[^*/\\n])*\\**\\n([^*]|\\*+[^*/])*\\*+\\/"
+                                }
+                              }
+                            },
+                            "named": true,
+                            "value": "comment"
                           }
                         ]
                       },
@@ -651,6 +763,22 @@
                         {
                           "type": "STRING",
                           "value": "\u0000"
+                        },
+                        {
+                          "type": "ALIAS",
+                          "content": {
+                            "type": "TOKEN",
+                            "content": {
+                              "type": "PREC",
+                              "value": 1,
+                              "content": {
+                                "type": "PATTERN",
+                                "value": "\\/\\*([^*\\n]|\\*+[^*/\\n])*\\**\\n([^*]|\\*+[^*/])*\\*+\\/"
+                              }
+                            }
+                          },
+                          "named": true,
+                          "value": "comment"
                         }
                       ]
                     },
@@ -1233,6 +1361,22 @@
                                   {
                                     "type": "STRING",
                                     "value": "\u0000"
+                                  },
+                                  {
+                                    "type": "ALIAS",
+                                    "content": {
+                                      "type": "TOKEN",
+                                      "content": {
+                                        "type": "PREC",
+                                        "value": 1,
+                                        "content": {
+                                          "type": "PATTERN",
+                                          "value": "\\/\\*([^*\\n]|\\*+[^*/\\n])*\\**\\n([^*]|\\*+[^*/])*\\*+\\/"
+                                        }
+                                      }
+                                    },
+                                    "named": true,
+                                    "value": "comment"
                                   }
                                 ]
                               },
@@ -1269,6 +1413,22 @@
                                 {
                                   "type": "STRING",
                                   "value": "\u0000"
+                                },
+                                {
+                                  "type": "ALIAS",
+                                  "content": {
+                                    "type": "TOKEN",
+                                    "content": {
+                                      "type": "PREC",
+                                      "value": 1,
+                                      "content": {
+                                        "type": "PATTERN",
+                                        "value": "\\/\\*([^*\\n]|\\*+[^*/\\n])*\\**\\n([^*]|\\*+[^*/])*\\*+\\/"
+                                      }
+                                    }
+                                  },
+                                  "named": true,
+                                  "value": "comment"
                                 }
                               ]
                             },
@@ -1730,6 +1890,22 @@
                           {
                             "type": "STRING",
                             "value": "\u0000"
+                          },
+                          {
+                            "type": "ALIAS",
+                            "content": {
+                              "type": "TOKEN",
+                              "content": {
+                                "type": "PREC",
+                                "value": 1,
+                                "content": {
+                                  "type": "PATTERN",
+                                  "value": "\\/\\*([^*\\n]|\\*+[^*/\\n])*\\**\\n([^*]|\\*+[^*/])*\\*+\\/"
+                                }
+                              }
+                            },
+                            "named": true,
+                            "value": "comment"
                           }
                         ]
                       },
@@ -1757,6 +1933,22 @@
                         {
                           "type": "STRING",
                           "value": "\u0000"
+                        },
+                        {
+                          "type": "ALIAS",
+                          "content": {
+                            "type": "TOKEN",
+                            "content": {
+                              "type": "PREC",
+                              "value": 1,
+                              "content": {
+                                "type": "PATTERN",
+                                "value": "\\/\\*([^*\\n]|\\*+[^*/\\n])*\\**\\n([^*]|\\*+[^*/])*\\*+\\/"
+                              }
+                            }
+                          },
+                          "named": true,
+                          "value": "comment"
                         }
                       ]
                     },
@@ -2363,6 +2555,22 @@
                           {
                             "type": "STRING",
                             "value": "\u0000"
+                          },
+                          {
+                            "type": "ALIAS",
+                            "content": {
+                              "type": "TOKEN",
+                              "content": {
+                                "type": "PREC",
+                                "value": 1,
+                                "content": {
+                                  "type": "PATTERN",
+                                  "value": "\\/\\*([^*\\n]|\\*+[^*/\\n])*\\**\\n([^*]|\\*+[^*/])*\\*+\\/"
+                                }
+                              }
+                            },
+                            "named": true,
+                            "value": "comment"
                           }
                         ]
                       },
@@ -2390,6 +2598,22 @@
                         {
                           "type": "STRING",
                           "value": "\u0000"
+                        },
+                        {
+                          "type": "ALIAS",
+                          "content": {
+                            "type": "TOKEN",
+                            "content": {
+                              "type": "PREC",
+                              "value": 1,
+                              "content": {
+                                "type": "PATTERN",
+                                "value": "\\/\\*([^*\\n]|\\*+[^*/\\n])*\\**\\n([^*]|\\*+[^*/])*\\*+\\/"
+                              }
+                            }
+                          },
+                          "named": true,
+                          "value": "comment"
                         }
                       ]
                     },
@@ -2754,6 +2978,22 @@
                 {
                   "type": "STRING",
                   "value": "\u0000"
+                },
+                {
+                  "type": "ALIAS",
+                  "content": {
+                    "type": "TOKEN",
+                    "content": {
+                      "type": "PREC",
+                      "value": 1,
+                      "content": {
+                        "type": "PATTERN",
+                        "value": "\\/\\*([^*\\n]|\\*+[^*/\\n])*\\**\\n([^*]|\\*+[^*/])*\\*+\\/"
+                      }
+                    }
+                  },
+                  "named": true,
+                  "value": "comment"
                 }
               ]
             }
