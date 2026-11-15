@@ -663,43 +663,23 @@ module.exports = grammar({
       )),
       field('value', optional($._expression)),
       '{',
-      repeat(choice($.expression_case, $.default_case)),
-      optional(choice(alias($._final_expression_case, $.expression_case), alias($._final_default_case, $.default_case))),
+      ...caseClauses($, $.expression_case, $._final_expression_case),
       '}',
     ),
 
-    expression_case: $ => seq(
-      'case',
-      field('value', $.expression_list),
-      ':',
-      optional(alias($._terminated_statement_list, $.statement_list)),
-    ),
+    expression_case: $ => expressionCase($),
 
-    _final_expression_case: $ => seq(
-      'case',
-      field('value', $.expression_list),
-      ':',
-      alias($._unterminated_statement_list, $.statement_list),
-    ),
+    _final_expression_case: $ => expressionCase($, true),
 
-    default_case: $ => seq(
-      'default',
-      ':',
-      optional(alias($._terminated_statement_list, $.statement_list)),
-    ),
+    default_case: $ => defaultCase($),
 
-    _final_default_case: $ => seq(
-      'default',
-      ':',
-      alias($._unterminated_statement_list, $.statement_list),
-    ),
+    _final_default_case: $ => defaultCase($, true),
 
     type_switch_statement: $ => seq(
       'switch',
       $._type_switch_header,
       '{',
-      repeat(choice($.type_case, $.default_case)),
-      optional(choice(alias($._final_type_case, $.type_case), alias($._final_default_case, $.default_case))),
+      ...caseClauses($, $.type_case, $._final_type_case),
       '}',
     ),
 
@@ -716,41 +696,20 @@ module.exports = grammar({
       ')',
     ),
 
-    type_case: $ => seq(
-      'case',
-      field('type', commaSep1($._type)),
-      ':',
-      optional(alias($._terminated_statement_list, $.statement_list)),
-    ),
+    type_case: $ => typeCase($),
 
-    _final_type_case: $ => seq(
-      'case',
-      field('type', commaSep1($._type)),
-      ':',
-      alias($._unterminated_statement_list, $.statement_list),
-    ),
+    _final_type_case: $ => typeCase($, true),
 
     select_statement: $ => seq(
       'select',
       '{',
-      repeat(choice($.communication_case, $.default_case)),
-      optional(choice(alias($._final_communication_case, $.communication_case), alias($._final_default_case, $.default_case))),
+      ...caseClauses($, $.communication_case, $._final_communication_case),
       '}',
     ),
 
-    communication_case: $ => seq(
-      'case',
-      field('communication', choice($.send_statement, $.receive_statement)),
-      ':',
-      optional(alias($._terminated_statement_list, $.statement_list)),
-    ),
+    communication_case: $ => communicationCase($),
 
-    _final_communication_case: $ => seq(
-      'case',
-      field('communication', choice($.send_statement, $.receive_statement)),
-      ':',
-      alias($._unterminated_statement_list, $.statement_list),
-    ),
+    _final_communication_case: $ => communicationCase($, true),
 
     _expression: $ => choice(
       $.unary_expression,
@@ -1032,6 +991,37 @@ module.exports = grammar({
     )),
   },
 });
+
+function caseClauses($, clause, finalClause) {
+  return [
+    repeat(choice(clause, $.default_case)),
+    optional(choice(alias(finalClause, clause), alias($._final_default_case, $.default_case))),
+  ];
+}
+
+function expressionCase($, final = false) {
+  return caseClause($, ['case', field('value', $.expression_list), ':'], final);
+}
+
+function defaultCase($, final = false) {
+  return caseClause($, ['default', ':'], final);
+}
+
+function typeCase($, final = false) {
+  return caseClause($, ['case', field('type', commaSep1($._type)), ':'], final);
+}
+
+function communicationCase($, final = false) {
+  return caseClause($, ['case', field('communication', choice($.send_statement, $.receive_statement)), ':'], final);
+}
+
+function caseClause($, head, final) {
+  const body = final
+    ? alias($._unterminated_statement_list, $.statement_list)
+    : optional(alias($._terminated_statement_list, $.statement_list));
+  return seq(...head, body);
+}
+
 
 /**
  * Creates a rule to match one or more occurrences of `rule` separated by `sep`
