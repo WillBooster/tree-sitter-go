@@ -38,12 +38,8 @@
                         "content": {
                           "type": "TOKEN",
                           "content": {
-                            "type": "PREC",
-                            "value": 1,
-                            "content": {
-                              "type": "PATTERN",
-                              "value": "\\/\\*([^*\\n]|\\*+[^*/\\n])*\\**\\n([^*]|\\*+[^*/])*\\*+\\/"
-                            }
+                            "type": "PATTERN",
+                            "value": "\\/\\*([^*\\n]|\\*+[^*/\\n])*\\**\\n([^*]|\\*+[^*/])*\\*+\\/"
                           }
                         },
                         "named": true,
@@ -80,12 +76,8 @@
                         "content": {
                           "type": "TOKEN",
                           "content": {
-                            "type": "PREC",
-                            "value": 1,
-                            "content": {
-                              "type": "PATTERN",
-                              "value": "\\/\\*([^*\\n]|\\*+[^*/\\n])*\\**\\n([^*]|\\*+[^*/])*\\*+\\/"
-                            }
+                            "type": "PATTERN",
+                            "value": "\\/\\*([^*\\n]|\\*+[^*/\\n])*\\**\\n([^*]|\\*+[^*/])*\\*+\\/"
                           }
                         },
                         "named": true,
@@ -260,12 +252,8 @@
                             "content": {
                               "type": "TOKEN",
                               "content": {
-                                "type": "PREC",
-                                "value": 1,
-                                "content": {
-                                  "type": "PATTERN",
-                                  "value": "\\/\\*([^*\\n]|\\*+[^*/\\n])*\\**\\n([^*]|\\*+[^*/])*\\*+\\/"
-                                }
+                                "type": "PATTERN",
+                                "value": "\\/\\*([^*\\n]|\\*+[^*/\\n])*\\**\\n([^*]|\\*+[^*/])*\\*+\\/"
                               }
                             },
                             "named": true,
@@ -303,12 +291,8 @@
                           "content": {
                             "type": "TOKEN",
                             "content": {
-                              "type": "PREC",
-                              "value": 1,
-                              "content": {
-                                "type": "PATTERN",
-                                "value": "\\/\\*([^*\\n]|\\*+[^*/\\n])*\\**\\n([^*]|\\*+[^*/])*\\*+\\/"
-                              }
+                              "type": "PATTERN",
+                              "value": "\\/\\*([^*\\n]|\\*+[^*/\\n])*\\**\\n([^*]|\\*+[^*/])*\\*+\\/"
                             }
                           },
                           "named": true,
@@ -407,12 +391,8 @@
                                     "content": {
                                       "type": "TOKEN",
                                       "content": {
-                                        "type": "PREC",
-                                        "value": 1,
-                                        "content": {
-                                          "type": "PATTERN",
-                                          "value": "\\/\\*([^*\\n]|\\*+[^*/\\n])*\\**\\n([^*]|\\*+[^*/])*\\*+\\/"
-                                        }
+                                        "type": "PATTERN",
+                                        "value": "\\/\\*([^*\\n]|\\*+[^*/\\n])*\\**\\n([^*]|\\*+[^*/])*\\*+\\/"
                                       }
                                     },
                                     "named": true,
@@ -450,12 +430,8 @@
                                   "content": {
                                     "type": "TOKEN",
                                     "content": {
-                                      "type": "PREC",
-                                      "value": 1,
-                                      "content": {
-                                        "type": "PATTERN",
-                                        "value": "\\/\\*([^*\\n]|\\*+[^*/\\n])*\\**\\n([^*]|\\*+[^*/])*\\*+\\/"
-                                      }
+                                      "type": "PATTERN",
+                                      "value": "\\/\\*([^*\\n]|\\*+[^*/\\n])*\\**\\n([^*]|\\*+[^*/])*\\*+\\/"
                                     }
                                   },
                                   "named": true,
@@ -726,12 +702,8 @@
                             "content": {
                               "type": "TOKEN",
                               "content": {
-                                "type": "PREC",
-                                "value": 1,
-                                "content": {
-                                  "type": "PATTERN",
-                                  "value": "\\/\\*([^*\\n]|\\*+[^*/\\n])*\\**\\n([^*]|\\*+[^*/])*\\*+\\/"
-                                }
+                                "type": "PATTERN",
+                                "value": "\\/\\*([^*\\n]|\\*+[^*/\\n])*\\**\\n([^*]|\\*+[^*/])*\\*+\\/"
                               }
                             },
                             "named": true,
@@ -769,12 +741,8 @@
                           "content": {
                             "type": "TOKEN",
                             "content": {
-                              "type": "PREC",
-                              "value": 1,
-                              "content": {
-                                "type": "PATTERN",
-                                "value": "\\/\\*([^*\\n]|\\*+[^*/\\n])*\\**\\n([^*]|\\*+[^*/])*\\*+\\/"
-                              }
+                              "type": "PATTERN",
+                              "value": "\\/\\*([^*\\n]|\\*+[^*/\\n])*\\**\\n([^*]|\\*+[^*/])*\\*+\\/"
                             }
                           },
                           "named": true,
@@ -1367,12 +1335,8 @@
                                     "content": {
                                       "type": "TOKEN",
                                       "content": {
-                                        "type": "PREC",
-                                        "value": 1,
-                                        "content": {
-                                          "type": "PATTERN",
-                                          "value": "\\/\\*([^*\\n]|\\*+[^*/\\n])*\\**\\n([^*]|\\*+[^*/])*\\*+\\/"
-                                        }
+                                        "type": "PATTERN",
+                                        "value": "\\/\\*([^*\\n]|\\*+[^*/\\n])*\\**\\n([^*]|\\*+[^*/])*\\*+\\/"
                                       }
                                     },
                                     "named": true,
@@ -1419,12 +1383,8 @@
                                   "content": {
                                     "type": "TOKEN",
                                     "content": {
-                                      "type": "PREC",
-                                      "value": 1,
-                                      "content": {
-                                        "type": "PATTERN",
-                                        "value": "\\/\\*([^*\\n]|\\*+[^*/\\n])*\\**\\n([^*]|\\*+[^*/])*\\*+\\/"
-                                      }
+                                      "type": "PATTERN",
+                                      "value": "\\/\\*([^*\\n]|\\*+[^*/\\n])*\\**\\n([^*]|\\*+[^*/])*\\*+\\/"
                                     }
                                   },
                                   "named": true,
@@ -1896,12 +1856,8 @@
                             "content": {
                               "type": "TOKEN",
                               "content": {
-                                "type": "PREC",
-                                "value": 1,
-                                "content": {
-                                  "type": "PATTERN",
-                                  "value": "\\/\\*([^*\\n]|\\*+[^*/\\n])*\\**\\n([^*]|\\*+[^*/])*\\*+\\/"
-                                }
+                                "type": "PATTERN",
+                                "value": "\\/\\*([^*\\n]|\\*+[^*/\\n])*\\**\\n([^*]|\\*+[^*/])*\\*+\\/"
                               }
                             },
                             "named": true,
@@ -1939,12 +1895,8 @@
                           "content": {
                             "type": "TOKEN",
                             "content": {
-                              "type": "PREC",
-                              "value": 1,
-                              "content": {
-                                "type": "PATTERN",
-                                "value": "\\/\\*([^*\\n]|\\*+[^*/\\n])*\\**\\n([^*]|\\*+[^*/])*\\*+\\/"
-                              }
+                              "type": "PATTERN",
+                              "value": "\\/\\*([^*\\n]|\\*+[^*/\\n])*\\**\\n([^*]|\\*+[^*/])*\\*+\\/"
                             }
                           },
                           "named": true,
@@ -2561,12 +2513,8 @@
                             "content": {
                               "type": "TOKEN",
                               "content": {
-                                "type": "PREC",
-                                "value": 1,
-                                "content": {
-                                  "type": "PATTERN",
-                                  "value": "\\/\\*([^*\\n]|\\*+[^*/\\n])*\\**\\n([^*]|\\*+[^*/])*\\*+\\/"
-                                }
+                                "type": "PATTERN",
+                                "value": "\\/\\*([^*\\n]|\\*+[^*/\\n])*\\**\\n([^*]|\\*+[^*/])*\\*+\\/"
                               }
                             },
                             "named": true,
@@ -2604,12 +2552,8 @@
                           "content": {
                             "type": "TOKEN",
                             "content": {
-                              "type": "PREC",
-                              "value": 1,
-                              "content": {
-                                "type": "PATTERN",
-                                "value": "\\/\\*([^*\\n]|\\*+[^*/\\n])*\\**\\n([^*]|\\*+[^*/])*\\*+\\/"
-                              }
+                              "type": "PATTERN",
+                              "value": "\\/\\*([^*\\n]|\\*+[^*/\\n])*\\**\\n([^*]|\\*+[^*/])*\\*+\\/"
                             }
                           },
                           "named": true,
@@ -2984,12 +2928,8 @@
                   "content": {
                     "type": "TOKEN",
                     "content": {
-                      "type": "PREC",
-                      "value": 1,
-                      "content": {
-                        "type": "PATTERN",
-                        "value": "\\/\\*([^*\\n]|\\*+[^*/\\n])*\\**\\n([^*]|\\*+[^*/])*\\*+\\/"
-                      }
+                      "type": "PATTERN",
+                      "value": "\\/\\*([^*\\n]|\\*+[^*/\\n])*\\**\\n([^*]|\\*+[^*/])*\\*+\\/"
                     }
                   },
                   "named": true,

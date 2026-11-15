@@ -29,7 +29,6 @@ examples/go/src/internal/types/testdata/check/decls0.go
 examples/go/src/internal/types/testdata/check/decls4.go
 examples/go/src/internal/types/testdata/check/expr0.go
 examples/go/src/internal/types/testdata/check/expr3.go
-examples/go/src/internal/types/testdata/check/gotos.go
 examples/go/src/internal/types/testdata/check/issues0.go
 examples/go/src/internal/types/testdata/check/stmt0.go
 examples/go/src/internal/types/testdata/check/typeinst0.go
@@ -60,6 +59,7 @@ examples/go/test/fixedbugs/bug121.go
 examples/go/test/fixedbugs/bug163.go
 examples/go/test/fixedbugs/bug169.go
 examples/go/test/fixedbugs/bug228.go
+examples/go/test/fixedbugs/bug274.go
 examples/go/test/fixedbugs/bug280.go
 examples/go/test/fixedbugs/bug287.go
 examples/go/test/fixedbugs/bug299.go
@@ -104,8 +104,6 @@ examples/go/test/fixedbugs/issue38125.go
 examples/go/test/fixedbugs/issue4405.go
 examples/go/test/fixedbugs/issue4452.go
 examples/go/test/fixedbugs/issue4470.go
-examples/go/test/fixedbugs/issue52278.go
-examples/go/test/fixedbugs/issue70175.go
 examples/go/test/fixedbugs/issue9036.go
 examples/go/test/genmeth1.go
 examples/go/test/import5.go

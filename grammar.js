@@ -27,7 +27,7 @@ const assignmentOperators = multiplicativeOperators.concat(additiveOperators).ma
 
 const newline = /\n/;
 const newlineComment = /\/\*([^*\n]|\*+[^*/\n])*\**\n([^*]|\*+[^*/])*\*+\//;
-const terminator = $ => choice(newline, ';', '\0', alias(token(prec(1, newlineComment)), $.comment));
+const terminator = $ => choice(newline, ';', '\0', alias(token(newlineComment), $.comment));
 
 const hexDigit = /[0-9a-fA-F]/;
 const octalDigit = /[0-7]/;
