@@ -14,11 +14,8 @@ to its authors and contributors. This is not an official release of that project
 
 This fork extends upstream's version 0.25.0 grammar with method type parameters and generates the parser with the
 [WillBooster/tree-sitter](https://github.com/WillBooster/tree-sitter) generator. The parser carries that fork's ABI
-number (`0x5742000c`), which upstream tree-sitter runtimes reject. This package targets the WillBooster runtime
-(`willbooster-tree-sitter`, `@willbooster/web-tree-sitter`) version 20.0.0 or later within 20.x; the C and Wasm grammar
-ABI is also compatible with 19.1.1+. Earlier 17.x, 18.x, and 19.0.x WillBooster runtimes share ABI `0x5742000c` and
-pass the ABI check, but dereference `TSLanguage` tables (`alias_map`, `primary_state_bitmap`) omitted since 19.1.0 in
-pre-19.0.0 query APIs and pre-19.1.0 Wasm language loading.
+number (`0x5742000d`), which upstream tree-sitter runtimes reject. This package targets the WillBooster runtime
+(`willbooster-tree-sitter`, `@willbooster/web-tree-sitter`) version 23.0.0 or later within 23.x.
 
 ## Support Scope
 
@@ -30,7 +27,7 @@ as new major versions.
 ## Usage
 
 The npm package ships `tree-sitter-go.wasm` for
-[@willbooster/web-tree-sitter](https://www.npmjs.com/package/@willbooster/web-tree-sitter) version 20.0.0 or later within 20.x, which runs in Node.js, Bun, browsers, and Cloudflare Workers. In Node.js and Bun, load the grammar from its path:
+[@willbooster/web-tree-sitter](https://www.npmjs.com/package/@willbooster/web-tree-sitter) version 23.0.0 or later within 23.x, which runs in Node.js, Bun, browsers, and Cloudflare Workers. In Node.js and Bun, load the grammar from its path:
 
 ```js
 import { fileURLToPath } from 'node:url';
@@ -76,7 +73,7 @@ In Rust, depend on the [crate](https://crates.io/crates/willbooster-tree-sitter-
 fuzzed with:
 
 ```sh
-cargo add willbooster-tree-sitter@20.0.0 --rename tree-sitter
+cargo add willbooster-tree-sitter@23.0.0 --rename tree-sitter
 cargo add willbooster-tree-sitter-go --rename tree-sitter-go
 ```
 
